@@ -17,6 +17,8 @@
 		DB37209822A737B60021B2C0 /* tasksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37209722A737B60021B2C0 /* tasksTests.swift */; };
 		DB3720A322A737B70021B2C0 /* tasksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3720A222A737B70021B2C0 /* tasksUITests.swift */; };
 		DB3720B122A738F00021B2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */; };
+		DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */; };
+		DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */; };
 		E7236E96624B1CE1E7F75CA9 /* Pods_tasksUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0988BF018D94B596C17B0653 /* Pods_tasksUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +63,8 @@
 		DB3720A222A737B70021B2C0 /* tasksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tasksUITests.swift; sourceTree = "<group>"; };
 		DB3720A422A737B70021B2C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +115,6 @@
 				8590DCD69F5E77BD9FF70A94 /* Pods-tasksUITests.debug.xcconfig */,
 				D72A085CB231598591464DF7 /* Pods-tasksUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -142,6 +145,8 @@
 			children = (
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB37208422A737B50021B2C0 /* ViewController.swift */,
+				DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */,
+				DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
 				DB37208922A737B60021B2C0 /* Assets.xcassets */,
 				DB37208B22A737B60021B2C0 /* LaunchScreen.storyboard */,
@@ -307,13 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks.sh\"\n";
@@ -324,13 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources.sh\"\n";
@@ -341,15 +334,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-tasksUITests-checkManifestLockResult.txt",
 			);
@@ -363,15 +352,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-tasksTests-checkManifestLockResult.txt",
 			);
@@ -385,15 +370,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-tasks-checkManifestLockResult.txt",
 			);
@@ -409,8 +390,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */,
 				DB37208522A737B50021B2C0 /* ViewController.swift in Sources */,
 				DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */,
+				DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
