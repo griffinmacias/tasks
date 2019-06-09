@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseAuthUI
+import FirebaseUI
 import FirebaseFirestore
 
 class CollectionViewController: UIViewController {
