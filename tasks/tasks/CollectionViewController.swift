@@ -72,10 +72,11 @@ class CollectionViewController: UIViewController {
                     self?.getDocuments()
                 })
             case .task:
-                guard let list = self?.list else { return }
+//                guard let list = self?.list else { return }
 //                list.add(title, completion: { (<#List#>) in
 //                    <#code#>
 //                })
+                ()
             }
         }
         let cancelAction = UIAlertAction(title: "cancel", style: .default, handler: nil)
