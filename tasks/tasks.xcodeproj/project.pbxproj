@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		62D4F90AF81ED060D38E398F /* Pods_tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8FFFCD181D11A634A5C2FDF /* Pods_tasks.framework */; };
 		7C48E615B56FFA2D3C418F95 /* Pods_tasksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF459D108F70798D26762F4 /* Pods_tasksTests.framework */; };
+		DB19102D22ADAD43003FB050 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB19102C22ADAD43003FB050 /* Models.swift */; };
 		DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208222A737B50021B2C0 /* AppDelegate.swift */; };
 		DB37208522A737B50021B2C0 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208422A737B50021B2C0 /* CollectionViewController.swift */; };
 		DB37208822A737B50021B2C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB37208622A737B50021B2C0 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 		BD39E547A31E374FBCE5C926 /* Pods-tasksTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tasksTests.release.xcconfig"; path = "Target Support Files/Pods-tasksTests/Pods-tasksTests.release.xcconfig"; sourceTree = "<group>"; };
 		C8FFFCD181D11A634A5C2FDF /* Pods_tasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72A085CB231598591464DF7 /* Pods-tasksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tasksUITests.release.xcconfig"; path = "Target Support Files/Pods-tasksUITests/Pods-tasksUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DB19102C22ADAD43003FB050 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		DB37207F22A737B50021B2C0 /* tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB37208222A737B50021B2C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB37208422A737B50021B2C0 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
 				DB37208422A737B50021B2C0 /* CollectionViewController.swift */,
+				DB19102C22ADAD43003FB050 /* Models.swift */,
 				DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */,
 				DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
@@ -315,7 +318,13 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-frameworks.sh\"\n";
@@ -326,7 +335,13 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tasks/Pods-tasks-resources.sh\"\n";
@@ -396,6 +411,7 @@
 				DB9B6A9B22A9C09A00364558 /* Network.swift in Sources */,
 				DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */,
 				DB37208522A737B50021B2C0 /* CollectionViewController.swift in Sources */,
+				DB19102D22ADAD43003FB050 /* Models.swift in Sources */,
 				DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */,
 				DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */,
 			);

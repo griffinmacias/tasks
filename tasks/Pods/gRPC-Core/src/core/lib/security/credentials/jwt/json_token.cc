@@ -16,6 +16,8 @@
  *
  */
 
+#include <grpc/support/port_platform.h>
+
 #include "src/core/lib/security/credentials/jwt/json_token.h"
 
 #include <string.h>
@@ -31,9 +33,9 @@
 #include "src/core/lib/slice/b64.h"
 
 extern "C" {
-#include <openssl/bio.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
+#include <openssl_grpc/bio.h>
+#include <openssl_grpc/evp.h>
+#include <openssl_grpc/pem.h>
 }
 
 /* --- Constants. --- */
@@ -119,7 +121,7 @@ grpc_auth_json_key grpc_auth_json_key_create_from_string(
   char* scratchpad = gpr_strdup(json_string);
   grpc_json* json = grpc_json_parse_string(scratchpad);
   grpc_auth_json_key result = grpc_auth_json_key_create_from_json(json);
-  if (json != nullptr) grpc_json_destroy(json);
+  grpc_json_destroy(json);
   gpr_free(scratchpad);
   return result;
 }

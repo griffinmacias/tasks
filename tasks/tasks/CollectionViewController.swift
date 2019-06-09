@@ -16,6 +16,7 @@ class CollectionViewController: UIViewController {
     public var type: Type = .list
     private var listener: ListenerRegistration?
     private var collection: [ItemProtocol] = []
+    public var list: List?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,26 +27,30 @@ class CollectionViewController: UIViewController {
                 self.present(authViewController, animated: true, completion: nil)
             }
         } else {
-            let query = Firestore.firestore().collection(type.rawValue + "s")
-            listener = query.addSnapshotListener { [weak self] (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    print("Error fetching snapshot results: \(error!)")
-                    return
+            getDocuments()
+        }
+    }
+    
+    private func getDocuments() {
+        let query = Firestore.firestore().collection(type.rawValue + "s")
+        listener = query.addSnapshotListener { [weak self] (snapshot, error) in
+            guard let snapshot = snapshot else {
+                print("Error fetching snapshot results: \(error!)")
+                return
+            }
+            let collection = snapshot.documents.map { (document) -> ItemProtocol in
+                print(document)
+                switch self?.type {
+                case .list?:
+                    return List(document)
+                default:
+                    return Task(document)
                 }
-                let collection = snapshot.documents.map { (document) -> ItemProtocol in
-                    print(document)
-                    switch self?.type {
-                    case .list?:
-                        return List(document.data())
-                    default:
-                        return Task([:])
-                    }
-                }
-                self?.collection = collection
-                DispatchQueue.main.async {
-                    self?.collectionTableView.reloadData()
-                    
-                }
+            }
+            self?.collection = collection
+            DispatchQueue.main.async {
+                self?.collectionTableView.reloadData()
+                
             }
         }
     }
@@ -58,20 +63,20 @@ class CollectionViewController: UIViewController {
             guard let weakSelf = self,
                 let textField = alertController.textFields?.first,
                 let title = textField.text else { return }
-            let collection = Firestore.firestore().collection(weakSelf.type.rawValue + "s")
-            let collectionJSON = ["title": title]
-            collection.addDocument(data: collectionJSON)
-            var collectionObj: ItemProtocol?
             switch weakSelf.type {
             case .list:
-                collectionObj = List(collectionJSON)
+                let collection = Firestore.firestore().collection(weakSelf.type.rawValue + "s")
+                let collectionJSON = ["title": title]
+                collection.addDocument(data: collectionJSON, completion: { [weak self] (error) in
+                    guard error != nil else { return }
+                    self?.getDocuments()
+                })
             case .task:
-                collectionObj = Task(collectionJSON)
+                guard let list = self?.list else { return }
+//                list.add(title, completion: { (<#List#>) in
+//                    <#code#>
+//                })
             }
-            guard let collectionO = collectionObj else { return }
-            weakSelf.collection.append(collectionO)
-            weakSelf.collectionTableView.reloadData()
-            
         }
         let cancelAction = UIAlertAction(title: "cancel", style: .default, handler: nil)
         alertController.addAction(okAction)
@@ -93,16 +98,17 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
-//        let item = collection[indexPath.row]
+        let item = collection[indexPath.row]
         switch type {
         case .list:
             collectionViewController.type = .task
-            //will have to pass id
+            collectionViewController.list = item as? List
         case .task:
             //complete or uncomplete the task
             ()
             
         }
+        navigationController?.pushViewController(collectionViewController, animated: true)
     }
 }
 
