@@ -113,25 +113,25 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = collection[indexPath.row]
-        switch type {
-        case .list:
-            guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
-            collectionViewController.type = .task
-            collectionViewController.list = item as? List
-            collectionViewController.navigationItem.title = item.title
-            navigationController?.pushViewController(collectionViewController, animated: true)
-        case .task:
-            //complete or uncomplete the task
-            guard let cell = tableView.cellForRow(at: indexPath) as? ListTableViewCell else {
-                return
-            }
-            guard let task = collection[indexPath.row] as? Task else { return }
-            let newValue = !task.completed
-            task.completed = newValue
-            task.document.reference.updateData(["completed": newValue])
-            cell.accessoryType = .checkmark
-        }
+//        let item = collection[indexPath.row]
+//        switch type {
+//        case .list:
+//            guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
+//            collectionViewController.type = .task
+//            collectionViewController.list = item as? List
+//            collectionViewController.navigationItem.title = item.title
+//            navigationController?.pushViewController(collectionViewController, animated: true)
+//        case .task:
+//            //complete or uncomplete the task
+//            guard let cell = tableView.cellForRow(at: indexPath) as? ListTableViewCell else {
+//                return
+//            }
+//            guard let task = collection[indexPath.row] as? Task else { return }
+//            let newValue = !task.completed
+//            task.completed = newValue
+//            task.document.reference.updateData(["completed": newValue])
+//            cell.accessoryType = .checkmark
+//        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
