@@ -23,11 +23,8 @@ protocol ItemProtocol {
 final class List: ItemProtocol {
     
     public var title: String {
-        get {
-            return document.data()?["title"] as? String ?? "no title"
-        }
-        set {
-            self.title = newValue
+        didSet {
+            //network call?
         }
     }
     internal var document: DocumentSnapshot
@@ -35,6 +32,7 @@ final class List: ItemProtocol {
 //    public var metadata: Metadata
     public init(_ document: QueryDocumentSnapshot) {
         self.document = document
+        self.title = document.data()["title"] as? String ?? "no title"
 //        self.metadata = Metadata()
     }
     
@@ -57,18 +55,24 @@ final class List: ItemProtocol {
 final class Task: ItemProtocol {
     
     public var title: String {
-        get {
-            return document.data()?["title"] as? String ?? "no title"
-        }
-        set {
-            self.title = newValue
+        didSet {
+            //network call?
         }
     }
+    
+    public var completed: Bool {
+        didSet {
+            //network call?
+        }
+    }
+    
     internal var document: DocumentSnapshot
 
     init(_ document: QueryDocumentSnapshot) {
         //    public var metadata: Metadata
+        self.title = document.data()["title"] as? String ?? "no title"
         self.document = document
+        self.completed = document.data()["completed"] as? Bool ?? false
 //        self.metadata = Metadata()
     }
     
