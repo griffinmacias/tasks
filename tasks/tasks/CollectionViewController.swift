@@ -10,8 +10,23 @@ import UIKit
 import FirebaseUI
 import FirebaseFirestore
 
+enum SwipeType: String {
+    case left = "completed"
+    case right = "undo"
+    var color: UIColor {
+        switch self {
+        case .left:
+            return .green
+        case .right:
+            return .lightGray
+        }
+    }
+}
+
 class CollectionViewController: UIViewController {
     
+    
+    static let taskDetailSegue: String = "taskDetailSegue"
     @IBOutlet private weak var collectionTableView: UITableView!
     public var type: Type = .list
     private var listener: ListenerRegistration?
@@ -60,7 +75,6 @@ class CollectionViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.navigationItem.title = self?.type == .list ? "Lists" : (self?.list?.title ?? "")
                 self?.collectionTableView.reloadData()
-                
             }
         }
     }
@@ -96,6 +110,18 @@ class CollectionViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    override func performSegue(withIdentifier identifier: String, sender: Any?) {
+        super.performSegue(withIdentifier: identifier, sender: sender)
+        guard identifier == CollectionViewController.taskDetailSegue else { return }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard segue.identifier == CollectionViewController.taskDetailSegue, let task = sender as? Task else { return }
+        segue.destination.navigationItem.title = task.title
+    }
 }
 
 extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
@@ -113,40 +139,63 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let item = collection[indexPath.row]
-//        switch type {
-//        case .list:
-//            guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
-//            collectionViewController.type = .task
-//            collectionViewController.list = item as? List
-//            collectionViewController.navigationItem.title = item.title
-//            navigationController?.pushViewController(collectionViewController, animated: true)
-//        case .task:
-//            //complete or uncomplete the task
-//            guard let cell = tableView.cellForRow(at: indexPath) as? ListTableViewCell else {
-//                return
-//            }
-//            guard let task = collection[indexPath.row] as? Task else { return }
-//            let newValue = !task.completed
-//            task.completed = newValue
-//            task.document.reference.updateData(["completed": newValue])
-//            cell.accessoryType = .checkmark
-//        }
+        let item = collection[indexPath.row]
+        switch type {
+        case .list:
+            guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
+            collectionViewController.type = .task
+            collectionViewController.list = item as? List
+            collectionViewController.navigationItem.title = item.title
+            navigationController?.pushViewController(collectionViewController, animated: true)
+        case .task:
+            ()
+            performSegue(withIdentifier: CollectionViewController.taskDetailSegue, sender: item)
+        }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let item = collection[indexPath.row]
-            item.document.reference.delete()
-            collection.remove(at: indexPath.row)
-            collectionTableView.reloadData()
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let item = self.collection[indexPath.row] as? Task, !item.completed else { return nil }
+        let completedAction = UIContextualAction.itemSwipeAction(.left) {
+            item.completed = true
+            item.document.reference.updateData(["completed": item.completed])
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .checkmark
         }
+        let configuration = UISwipeActionsConfiguration(actions: [completedAction])
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let item = self.collection[indexPath.row] as? Task, item.completed else { return nil }
+        let undoAction = UIContextualAction.itemSwipeAction(.right) {
+            item.completed = false
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .none
+        }
+        let configuration = UISwipeActionsConfiguration(actions: [undoAction])
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+}
+
+extension UIContextualAction {
+    
+    class func itemSwipeAction(_ swipeType: SwipeType, completion: @escaping () -> Void) -> UIContextualAction {
+        let completedAction = UIContextualAction(style: .normal, title: swipeType.rawValue) { (_, _, _) in
+            completion()
+        }
+        completedAction.backgroundColor = swipeType.color
+        return completedAction
     }
 }
 
 extension CollectionViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         print(authUI, authDataResult ?? "no data result", error ?? "no error")
+        getDocuments()
     }
 }
 
