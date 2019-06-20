@@ -57,12 +57,21 @@ final class Task: ItemProtocol {
     public var title: String {
         didSet {
             //network call?
+            update("title", for: title)
         }
     }
     
     public var completed: Bool {
         didSet {
             //network call?
+            update("completed", for: completed)
+        }
+    }
+    
+    public var dueDate: Date? {
+        didSet {
+            guard let dueDate = dueDate else { return }
+            update("dueDate", for: dueDate)
         }
     }
     
@@ -73,7 +82,16 @@ final class Task: ItemProtocol {
         self.title = document.data()["title"] as? String ?? "no title"
         self.document = document
         self.completed = document.data()["completed"] as? Bool ?? false
+        self.dueDate = (document.data()["dueDate"] as? Timestamp)?.dateValue()
 //        self.metadata = Metadata()
+    }
+    
+    func update(_ key: String, for value: Any) {
+        document.reference.updateData([key: value])
+    }
+    
+    func post(_ key: String, for value: Any) {
+        document.reference.setData([key: value])
     }
     
     
@@ -83,3 +101,5 @@ enum Type: String {
     case list = "list"
     case task = "task"
 }
+
+

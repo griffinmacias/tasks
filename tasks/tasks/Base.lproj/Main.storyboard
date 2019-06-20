@@ -141,7 +141,7 @@
                         <sections>
                             <tableViewSection headerTitle="        " id="Akn-YX-qbO">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="title" rowHeight="44" id="eJm-h6-x4H">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="title" rowHeight="44" id="eJm-h6-x4H">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eJm-h6-x4H" id="hsU-Fl-IUt">
@@ -167,7 +167,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="          " id="FFX-AJ-Idl">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dueDate" rowHeight="44" id="NYE-61-lP9">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="dueDate" rowHeight="44" id="NYE-61-lP9">
                                         <rect key="frame" x="0.0" y="100" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NYE-61-lP9" id="Oeg-qF-oO8">
@@ -180,8 +180,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="next monday, 9:30 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRz-al-q0U">
-                                                    <rect key="frame" x="188" y="11.5" width="172" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6/20/19, 6:00 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRz-al-q0U">
+                                                    <rect key="frame" x="226" y="11.5" width="134" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -196,6 +196,31 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="datePicker" rowHeight="149" id="MtK-bc-L1m">
+                                        <rect key="frame" x="0.0" y="144" width="375" height="149"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MtK-bc-L1m" id="rWx-2v-ThO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="148.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZBz-6C-A6e">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148.5"/>
+                                                    <date key="date" timeIntervalSinceReferenceDate="582673776.69556499">
+                                                        <!--2019-06-19 21:49:36 +0000-->
+                                                    </date>
+                                                    <connections>
+                                                        <action selector="dateChanged:" destination="vaW-2X-yyA" eventType="valueChanged" id="jqx-c0-Bpi"/>
+                                                    </connections>
+                                                </datePicker>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ZBz-6C-A6e" firstAttribute="top" secondItem="rWx-2v-ThO" secondAttribute="top" id="HX2-fX-Ueo"/>
+                                                <constraint firstAttribute="bottom" secondItem="ZBz-6C-A6e" secondAttribute="bottom" id="IVZ-N3-UPu"/>
+                                                <constraint firstItem="ZBz-6C-A6e" firstAttribute="leading" secondItem="rWx-2v-ThO" secondAttribute="leading" id="PvO-fC-98h"/>
+                                                <constraint firstAttribute="trailing" secondItem="ZBz-6C-A6e" secondAttribute="trailing" id="XqL-tC-jyl"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -206,6 +231,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="OUd-vV-KDd"/>
                     <connections>
+                        <outlet property="dateLabel" destination="fRz-al-q0U" id="Zhs-4q-eoj"/>
+                        <outlet property="datePickerView" destination="ZBz-6C-A6e" id="3dB-An-3wu"/>
+                        <outlet property="dueDateLabel" destination="8QY-UX-NGo" id="1KB-Xr-Qt1"/>
                         <outlet property="itemDetailTableView" destination="BBS-9c-tMb" id="chU-NY-tD5"/>
                     </connections>
                 </tableViewController>
@@ -237,7 +265,7 @@
                     </cells>
                 </tableViewSection>
             </objects>
-            <point key="canvasLocation" x="1876" y="133"/>
+            <point key="canvasLocation" x="1876" y="132.68365817091455"/>
         </scene>
     </scenes>
 </document>

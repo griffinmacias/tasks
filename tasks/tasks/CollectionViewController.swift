@@ -35,6 +35,10 @@ class CollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if Auth.auth().currentUser == nil, let authUI = FUIAuth.defaultAuthUI() {
             let provider = FUIEmailAuth()
             authUI.providers = [provider]
@@ -46,10 +50,6 @@ class CollectionViewController: UIViewController {
         } else {
             getDocuments()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     private func getDocuments() {
@@ -111,16 +111,11 @@ class CollectionViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    override func performSegue(withIdentifier identifier: String, sender: Any?) {
-        super.performSegue(withIdentifier: identifier, sender: sender)
-        guard identifier == CollectionViewController.taskDetailSegue else { return }
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        guard segue.identifier == CollectionViewController.taskDetailSegue, let task = sender as? Task else { return }
-        segue.destination.navigationItem.title = task.title
+        guard segue.identifier == CollectionViewController.taskDetailSegue, let task = sender as? Task, let detailVC = segue.destination as? ItemDetailTableViewController else { return }
+        detailVC.navigationItem.title = task.title
+        detailVC.task = task
     }
 }
 
