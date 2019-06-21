@@ -15,15 +15,27 @@ extension Date {
 }
 
 class ItemDetailTableViewController: UITableViewController {
-    
+    @IBOutlet weak var switchView: UISwitch!
+    @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var datePickerView: UIDatePicker!
     @IBOutlet var itemDetailTableView: UITableView!
     public var task: Task?
+    
     private var showPicker: Bool = false {
         didSet {
-            dateLabel.textColor = self.showPicker ? .black : .lightGray
+            dateLabel.textColor = showPicker ? .black : .darkGray
+            itemDetailTableView.beginUpdates()
+            itemDetailTableView.endUpdates()
+        }
+    }
+    private var showDueDate: Bool = false {
+        didSet {
+            switchView.isOn = showDueDate
+            if !showDueDate {
+                showPicker = false
+            }
             itemDetailTableView.beginUpdates()
             itemDetailTableView.endUpdates()
         }
@@ -31,24 +43,42 @@ class ItemDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let task = task {
+            titleTextField.text = task.title
+            showDueDate = task.alert
+        }
         itemDetailTableView.tableFooterView = UIView()
         guard let dueDate = task?.dueDate else {
             dateLabel.text = ""
             return
         }
-        dateLabel.text = DateFormatter.localizedString(from: dueDate, dateStyle: .short, timeStyle: .short)
+        datePickerView.date = dueDate
+        dateLabel.text = dueDate.string(.dateShortTimeShort)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //save the info
-        guard let task = task, task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
-        task.dueDate = datePickerView.date
+        guard let task = task else { return }
+        
+        if let textFieldText = titleTextField.text {
+            let santizedText = textFieldText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            if santizedText.count > 0 && task.title != santizedText {
+                task.title = santizedText
+            }
+        }
+        if !switchView.isOn && task.alert {
+            task.dueDate = nil
+            task.alert = false
+        } else {
+            guard task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
+            task.dueDate = datePickerView.date
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.section, indexPath.row) {
-        case (1,0):
+        case (1,1):
             showPicker = !showPicker
         default:
             ()
@@ -56,15 +86,69 @@ class ItemDetailTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !showPicker && indexPath.section == 1 && indexPath.row == 1 {
-            return 0
-        } else {
-            return super.tableView(tableView, heightForRowAt: indexPath)
+        
+        switch (indexPath.section, indexPath.row) {
+        case (1, 1):
+            if !showDueDate {
+                return 0
+            }
+        case (1, 2):
+            if !showPicker {
+                return 0
+            }
+        case (_, _):
+            break
         }
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
     @IBAction func dateChanged(_ sender: UIDatePicker) {
-        dateLabel.text = DateFormatter.localizedString(from: sender.date, dateStyle: .short, timeStyle: .short)
+        dateLabel.text = sender.date.string(.dateShortTimeShort)
     }
     
+    @IBAction func didTapSwitchView(_ sender: UISwitch) {
+        showDueDate = sender.isOn
+        task?.alert = true
+    }
+    
+}
+
+enum DateFormat {
+    case dateShortTimeShort
+}
+
+extension DateFormat: RawRepresentable {
+    typealias RawValue = (date: DateFormatter.Style, time: DateFormatter.Style)
+    
+    init?(rawValue: RawValue) {
+        switch rawValue {
+        case (.short, .short):
+            self = .dateShortTimeShort
+        default:
+            return nil
+        }
+    }
+    
+    var rawValue: (date: DateFormatter.Style, time: DateFormatter.Style) {
+        switch self {
+        case .dateShortTimeShort:
+            return (.short, .short)
+        }
+    }
+}
+
+extension Date {
+    func string(_ dateFormat: DateFormat) -> String {
+        return DateFormatter.localizedString(from: self, dateStyle: dateFormat.rawValue.date, timeStyle: dateFormat.rawValue.time)
+    }
+}
+
+
+extension String {
+    func date(_ dateFormat: DateFormat) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = dateFormat.rawValue.date
+        dateFormatter.timeStyle = dateFormat.rawValue.time
+        return dateFormatter.date(from: self)
+    }
 }

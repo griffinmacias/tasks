@@ -114,7 +114,7 @@ class CollectionViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         guard segue.identifier == CollectionViewController.taskDetailSegue, let task = sender as? Task, let detailVC = segue.destination as? ItemDetailTableViewController else { return }
-        detailVC.navigationItem.title = task.title
+        detailVC.navigationItem.title = "Detail"
         detailVC.task = task
     }
 }

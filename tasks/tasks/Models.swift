@@ -68,10 +68,20 @@ final class Task: ItemProtocol {
         }
     }
     
+    public var alert: Bool {
+        didSet {
+            update("alert", for: alert)
+        }
+    }
+    
     public var dueDate: Date? {
         didSet {
-            guard let dueDate = dueDate else { return }
+            guard let dueDate = dueDate else {
+                update("alert", for: false)
+                return
+            }
             update("dueDate", for: dueDate)
+            update("alert", for: true)
         }
     }
     
@@ -83,6 +93,8 @@ final class Task: ItemProtocol {
         self.document = document
         self.completed = document.data()["completed"] as? Bool ?? false
         self.dueDate = (document.data()["dueDate"] as? Timestamp)?.dateValue()
+        self.alert = document.data()["alert"] as? Bool ?? false
+        
 //        self.metadata = Metadata()
     }
     
