@@ -35,6 +35,13 @@ class CollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFooterView(_:)))
+        collectionTableView.backgroundView = UIView()
+        collectionTableView.backgroundView?.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func didTapFooterView(_ tapGesture: UITapGestureRecognizer) {
+        showAddItemDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +86,7 @@ class CollectionViewController: UIViewController {
         }
     }
     
-    @IBAction func didTapAddButton(_ sender: UIBarButtonItem) {
+    private func showAddItemDetail() {
         //create alert controller and have user type name of list or task
         let alertController = UIAlertController.alertController(with: type)
         let okAction = UIAlertAction(title: "create", style: .default) { [weak self] (alert) in
@@ -111,6 +118,10 @@ class CollectionViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    @IBAction func didTapAddButton(_ sender: UIBarButtonItem) {
+        showAddItemDetail()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         guard segue.identifier == CollectionViewController.taskDetailSegue, let task = sender as? Task, let detailVC = segue.destination as? ItemDetailTableViewController else { return }
@@ -125,12 +136,28 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let list = collection[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCellID", for: indexPath) as! ListTableViewCell
-        cell.listTitleLabel.text = list.title
-        if let task = list as? Task {
-            cell.accessoryType = task.completed ? .checkmark : .none
+        var cell: UITableViewCell
+        switch type {
+        case .list:
+            let listCell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCellID", for: indexPath) as! ListTableViewCell
+            listCell.listTitleLabel.text = list.title
+            if let task = list as? Task {
+                listCell.accessoryType = task.completed ? .checkmark : .none
+            }
+            cell = listCell
+        case .task:
+            let taskCell = tableView.dequeueReusableCell(withIdentifier: "TaskTableViewCellID", for: indexPath) as! TaskTableViewCell
+            if let task = list as? Task {
+                let taskViewModel = TaskViewModel(task)
+                taskCell.configure(taskViewModel)
+            }
+            cell = taskCell
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -147,7 +174,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
             performSegue(withIdentifier: CollectionViewController.taskDetailSegue, sender: item)
         }
     }
-    
+    //TODO: need to add a swipe gesture to allow the pop to happen only on empty cells 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let item = self.collection[indexPath.row] as? Task, !item.completed else { return nil }
         let completedAction = UIContextualAction.itemSwipeAction(.left) {

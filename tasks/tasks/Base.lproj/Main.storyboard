@@ -46,33 +46,34 @@
                                             <outlet property="listTitleLabel" destination="9hA-43-9Rj" id="wR2-ha-6Mq"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TaskTableViewCellID" rowHeight="75" id="1cI-u4-mPI" customClass="TaskTableViewCell" customModule="tasks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="124" width="375" height="75"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TaskTableViewCellID" rowHeight="73" id="1cI-u4-mPI" customClass="TaskTableViewCell" customModule="tasks" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="124" width="375" height="73"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1cI-u4-mPI" id="E2p-FQ-vgj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="task title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVu-aU-OiL">
-                                                    <rect key="frame" x="51" y="27" width="309" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="due date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="voY-TY-0yP">
-                                                    <rect key="frame" x="51" y="52" width="309" height="18"/>
+                                                    <rect key="frame" x="16" y="47" width="344" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="task title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVu-aU-OiL">
+                                                    <rect key="frame" x="16" y="8" width="344" height="23"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="voY-TY-0yP" firstAttribute="leading" secondItem="E2p-FQ-vgj" secondAttribute="leading" constant="51" id="6Ap-hY-J0q"/>
-                                                <constraint firstItem="IVu-aU-OiL" firstAttribute="centerY" secondItem="E2p-FQ-vgj" secondAttribute="centerY" id="Pmc-oo-E05"/>
-                                                <constraint firstItem="voY-TY-0yP" firstAttribute="top" secondItem="IVu-aU-OiL" secondAttribute="bottom" constant="4" id="SQt-0G-fh4"/>
+                                                <constraint firstItem="IVu-aU-OiL" firstAttribute="top" secondItem="E2p-FQ-vgj" secondAttribute="top" constant="8" id="1NL-cJ-e01"/>
+                                                <constraint firstItem="voY-TY-0yP" firstAttribute="leading" secondItem="E2p-FQ-vgj" secondAttribute="leading" constant="16" id="6Ap-hY-J0q"/>
+                                                <constraint firstItem="voY-TY-0yP" firstAttribute="top" secondItem="IVu-aU-OiL" secondAttribute="bottom" constant="16" id="I8f-qA-vCh"/>
                                                 <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="IVu-aU-OiL" secondAttribute="trailing" constant="15" id="fMh-Bm-0n0"/>
                                                 <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="voY-TY-0yP" secondAttribute="trailing" constant="15" id="hLZ-h8-il4"/>
-                                                <constraint firstItem="IVu-aU-OiL" firstAttribute="leading" secondItem="E2p-FQ-vgj" secondAttribute="leading" constant="51" id="jqW-db-V7v"/>
+                                                <constraint firstItem="IVu-aU-OiL" firstAttribute="leading" secondItem="E2p-FQ-vgj" secondAttribute="leading" constant="16" id="jqW-db-V7v"/>
+                                                <constraint firstAttribute="bottom" secondItem="voY-TY-0yP" secondAttribute="bottom" constant="7.5" id="oGI-Di-FFT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

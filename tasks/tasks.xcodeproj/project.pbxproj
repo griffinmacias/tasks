@@ -68,6 +68,7 @@
 		DB3720A422A737B70021B2C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTableViewController.swift; sourceTree = "<group>"; };
+		DB808FE922BE6E820028A924 /* tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tasks.entitlements; sourceTree = "<group>"; };
 		DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9A22A9C09A00364558 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -149,6 +150,7 @@
 		DB37208122A737B50021B2C0 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				DB808FE922BE6E820028A924 /* tasks.entitlements */,
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
 				DB37208422A737B50021B2C0 /* CollectionViewController.swift */,
@@ -257,6 +259,11 @@
 					DB37207E22A737B50021B2C0 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					DB37209222A737B60021B2C0 = {
 						CreatedOnToolsVersion = 9.4.1;

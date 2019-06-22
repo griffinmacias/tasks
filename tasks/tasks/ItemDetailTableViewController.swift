@@ -107,6 +107,7 @@ class ItemDetailTableViewController: UITableViewController {
     }
     
     @IBAction func didTapSwitchView(_ sender: UISwitch) {
+        
         showDueDate = sender.isOn
         task?.alert = true
     }
@@ -115,6 +116,7 @@ class ItemDetailTableViewController: UITableViewController {
 
 enum DateFormat {
     case dateShortTimeShort
+    case dateFullTimeFull
 }
 
 extension DateFormat: RawRepresentable {
@@ -133,6 +135,8 @@ extension DateFormat: RawRepresentable {
         switch self {
         case .dateShortTimeShort:
             return (.short, .short)
+        case .dateFullTimeFull:
+            return (.full, .full)
         }
     }
 }

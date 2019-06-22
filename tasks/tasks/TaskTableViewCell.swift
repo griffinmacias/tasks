@@ -21,5 +21,16 @@ class TaskTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    public func configure(_ taskViewModel: TaskViewModel) {
+        taskTitleLabel.text = taskViewModel.titleText
+        if let dueDateText = taskViewModel.dueDateText {
+            taskDueDateLabel.text = dueDateText
+            taskDueDateLabel.textColor = taskViewModel.dueDatePassed ? .red : taskDueDateLabel.textColor
+        } else {
+            taskDueDateLabel.isHidden = true
+        }
+        accessoryType = taskViewModel.completed ? .checkmark : .none
+    }
 
 }
