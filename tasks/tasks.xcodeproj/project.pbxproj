@@ -19,7 +19,7 @@
 		DB3720A322A737B70021B2C0 /* tasksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3720A222A737B70021B2C0 /* tasksUITests.swift */; };
 		DB3720B122A738F00021B2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */; };
 		DB5277E422B84A720058FFED /* ItemDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */; };
-		DB808FEC22C0059E0028A924 /* mainV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB808FEA22C0059E0028A924 /* mainV2.storyboard */; };
+		DB808FEC22C0059E0028A924 /* MainV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB808FEA22C0059E0028A924 /* MainV2.storyboard */; };
 		DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */; };
 		DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */; };
 		DB9B6A9B22A9C09A00364558 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9A22A9C09A00364558 /* Network.swift */; };
@@ -70,7 +70,7 @@
 		DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTableViewController.swift; sourceTree = "<group>"; };
 		DB808FE922BE6E820028A924 /* tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tasks.entitlements; sourceTree = "<group>"; };
-		DB808FEB22C0059E0028A924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/mainV2.storyboard; sourceTree = "<group>"; };
+		DB808FEB22C0059E0028A924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainV2.storyboard; sourceTree = "<group>"; };
 		DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9A22A9C09A00364558 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */,
 				DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
-				DB808FEA22C0059E0028A924 /* mainV2.storyboard */,
+				DB808FEA22C0059E0028A924 /* MainV2.storyboard */,
 				DB37208922A737B60021B2C0 /* Assets.xcassets */,
 				DB37208B22A737B60021B2C0 /* LaunchScreen.storyboard */,
 				DB37208E22A737B60021B2C0 /* Info.plist */,
@@ -309,7 +309,7 @@
 				DB3720B122A738F00021B2C0 /* GoogleService-Info.plist in Resources */,
 				DB37208A22A737B60021B2C0 /* Assets.xcassets in Resources */,
 				DB37208822A737B50021B2C0 /* Main.storyboard in Resources */,
-				DB808FEC22C0059E0028A924 /* mainV2.storyboard in Resources */,
+				DB808FEC22C0059E0028A924 /* MainV2.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,12 +483,12 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		DB808FEA22C0059E0028A924 /* mainV2.storyboard */ = {
+		DB808FEA22C0059E0028A924 /* MainV2.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				DB808FEB22C0059E0028A924 /* Base */,
 			);
-			name = mainV2.storyboard;
+			name = MainV2.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
