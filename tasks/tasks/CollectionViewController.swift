@@ -174,7 +174,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
             performSegue(withIdentifier: CollectionViewController.taskDetailSegue, sender: item)
         }
     }
-    //TODO: need to add a swipe gesture to allow the pop to happen only on empty cells 
+    //TODO: need to add a swipe gesture to allow the pop to happen only on empty cells
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let item = self.collection[indexPath.row] as? Task, !item.completed else { return nil }
         let completedAction = UIContextualAction.itemSwipeAction(.left) {
