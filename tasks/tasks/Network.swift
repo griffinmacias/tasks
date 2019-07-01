@@ -59,9 +59,10 @@ extension Query {
     }
     //NOTE: - only works for tasks for now
     class func passedDueDates(for type: Type) -> Query {
-        let query = CollectionReference.query(with: type)
+        let query = CollectionReference.query(with: .task)
             .whereField("dueDate", isLessThan: Timestamp())
             .whereField("alert", isEqualTo: true)
+            .whereField("completed", isEqualTo: false)
         return query
     }
 }

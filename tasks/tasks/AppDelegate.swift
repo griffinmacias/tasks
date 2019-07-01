@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         center.delegate = self
         center.requestAuthorization(options: [.badge, .sound, .alert]) { (granted, error) in
             print("Granted \(granted), Error \(error.debugDescription)")
+//            UIApplication.shared.registerForRemoteNotifications()
         }
         return true
     }
@@ -55,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("notification willPresent is triggered")
         completionHandler([.alert])

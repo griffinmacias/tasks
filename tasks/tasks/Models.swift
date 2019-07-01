@@ -26,7 +26,7 @@ extension UNMutableNotificationContent {
         self.title = "Task"
         self.body = task.title
         self.sound = .default
-        self.badge = 1
+        self.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
         self.userInfo = ["id": task.document.documentID]
     }
     
