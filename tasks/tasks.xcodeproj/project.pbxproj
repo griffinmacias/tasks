@@ -171,11 +171,11 @@
 			isa = PBXGroup;
 			children = (
 				DB808FE922BE6E820028A924 /* tasks.entitlements */,
+				DB261ACA22C96CE600D5C124 /* Controllers */,
+				DB261ACB22C96D0200D5C124 /* Cells */,
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
 				DB19102C22ADAD43003FB050 /* Models.swift */,
-				DB261ACA22C96CE600D5C124 /* Controllers */,
-				DB261ACB22C96D0200D5C124 /* Cells */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
 				DB808FEA22C0059E0028A924 /* mainV2.storyboard */,
 				DB37208922A737B60021B2C0 /* Assets.xcassets */,
@@ -297,7 +297,7 @@
 				};
 			};
 			buildConfigurationList = DB37207A22A737B50021B2C0 /* Build configuration list for PBXProject "tasks" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -561,7 +561,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -615,7 +615,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
