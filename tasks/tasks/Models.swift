@@ -74,10 +74,6 @@ final class List: ItemProtocol {
 
 final public class Task: ItemProtocol {
     
-    public class func dueDatesPassed() -> Int {
-        return 0
-    }
-    
     public var title: String {
         didSet {
             update("title", for: title)

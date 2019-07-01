@@ -64,7 +64,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 extension AppDelegate {
     internal func updateBadgeCount() {
-        UIApplication.shared.applicationIconBadgeNumber = Task.dueDatesPassed()
+        Network.shared.numberOfDueDatesPassed(completion: { (count) in
+            DispatchQueue.main.async {
+                print("number of due dates passed \(count)")
+                UIApplication.shared.applicationIconBadgeNumber = count
+            }
+        })
     }
 }
 
