@@ -26,7 +26,7 @@ class TaskTableViewCell: UITableViewCell {
         taskTitleLabel.text = taskViewModel.titleText
         if let dueDateText = taskViewModel.dueDateText {
             taskDueDateLabel.text = dueDateText
-            taskDueDateLabel.textColor = taskViewModel.dueDatePassed ? .red : taskDueDateLabel.textColor
+            taskDueDateLabel.textColor = taskViewModel.dueDatePassed ? .red : .black
         } else {
             taskDueDateLabel.isHidden = true
         }

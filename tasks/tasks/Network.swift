@@ -9,28 +9,32 @@
 import Foundation
 import FirebaseFirestore
 
-protocol NetworkProtocol {
-    func fetchLists(completion:@escaping () -> Void)
-    func fetchTasks(completion:@escaping () -> Void)
-}
-
-
-final class Network: NetworkProtocol {
-    func fetch(with type: Type, completion: @escaping () -> Void) {
-        let reference = Firestore.firestore().collection(type.rawValue + "s")
-        reference.getDocuments { (querySnapshot, error) in
-//            let documents = querySnapshot?.documents
-            completion()
+final class Network {
+    
+    static let shared = Network()
+    private var listener: ListenerRegistration?
+    private init() {}
+    
+    public func fetch(with type: Type, list: List? = nil, completion: @escaping ([ItemProtocol]) -> Void) {
+        var query: Query = Firestore.firestore().collection(type.rawValue + "s")
+        if type == .task, let list = list {
+            query = query.whereField("listid", isEqualTo: list.document.documentID)
         }
-    }
-    func fetchLists(completion: @escaping () -> Void) {
-        let reference = Firestore.firestore().collection("list")
-        reference.getDocuments { (querySnapshot, error) in
-            
+        listener = query.addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot else {
+                print("Error fetching snapshot results: \(error!)")
+                return
+            }
+            let collection = snapshot.documents.map { (document) -> ItemProtocol in
+                print(document)
+                switch type {
+                case .list:
+                    return List(document)
+                default:
+                    return Task(document)
+                }
+            }
+            completion(collection)
         }
-        completion()
-    }
-    func fetchTasks(completion: @escaping () -> Void) {
-        completion()
     }
 }

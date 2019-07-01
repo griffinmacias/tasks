@@ -33,15 +33,11 @@ class CollectionViewController: UIViewController {
     private var collection: [ItemProtocol] = []
     public var list: List?
     
+    //MARK: - vc lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFooterView(_:)))
-        collectionTableView.backgroundView = UIView()
-        collectionTableView.backgroundView?.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func didTapFooterView(_ tapGesture: UITapGestureRecognizer) {
-        showAddItemDetail()
+        configureTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,32 +55,45 @@ class CollectionViewController: UIViewController {
         }
     }
     
-    private func getDocuments() {
-        var query: Query = Firestore.firestore().collection(type.rawValue + "s")
-        if type == .task, let list = list {
-            query = query.whereField("listid", isEqualTo: list.document.documentID)
+    //MARK: - actions
+    
+    @objc private func didTapFooterView(_ tapGesture: UITapGestureRecognizer) {
+        showAddItemDetail()
+    }
+    
+    @IBAction func didTapAddButton(_ sender: UIBarButtonItem) {
+        showAddItemDetail()
+    }
+    
+    //MARK: - helpers
+    
+    private func configureTableView() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFooterView(_:)))
+        collectionTableView.backgroundView = UIView()
+        collectionTableView.backgroundView?.addGestureRecognizer(tapGesture)
+    }
+    
+    private func updateNavTitle(_ list: List? = nil) {
+        if let listTitle = list?.title {
+            navigationItem.title = listTitle
+        } else {
+            navigationItem.title = "Lists"
         }
-        listener = query.addSnapshotListener { [weak self] (snapshot, error) in
-            guard let snapshot = snapshot else {
-                print("Error fetching snapshot results: \(error!)")
-                return
-            }
-            let collection = snapshot.documents.map { (document) -> ItemProtocol in
-                print(document)
-                switch self?.type {
-                case .list?:
-                    return List(document)
-                default:
-                    return Task(document)
-                }
-            }
-            self?.collection = collection
+    }
+    
+    //MARK: - network
+    
+    private func getDocuments() {
+        Network.shared.fetch(with: type, list: list) { [weak self] (items) in
+            self?.collection = items
             DispatchQueue.main.async {
-                self?.navigationItem.title = self?.type == .list ? "Lists" : (self?.list?.title ?? "")
+                self?.updateNavTitle(self?.list)
                 self?.collectionTableView.reloadData()
             }
         }
     }
+    
+    //MARK: - alert controller
     
     private func showAddItemDetail() {
         //create alert controller and have user type name of list or task
@@ -118,9 +127,7 @@ class CollectionViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func didTapAddButton(_ sender: UIBarButtonItem) {
-        showAddItemDetail()
-    }
+    //MARK: - segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -129,6 +136,8 @@ class CollectionViewController: UIViewController {
         detailVC.task = task
     }
 }
+
+//MARK: - tableview datasource and delegate
 
 extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -203,8 +212,9 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+//MARK: - swipe action extension
+
 extension UIContextualAction {
-    
     class func itemSwipeAction(_ swipeType: SwipeType, completion: @escaping () -> Void) -> UIContextualAction {
         let completedAction = UIContextualAction(style: .normal, title: swipeType.rawValue) { (_, _, _) in
             completion()
@@ -214,12 +224,16 @@ extension UIContextualAction {
     }
 }
 
+//MARK: - fui auth delegate
+
 extension CollectionViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         print(authUI, authDataResult ?? "no data result", error ?? "no error")
         getDocuments()
     }
 }
+
+//MARK: - alert controller extension
 
 extension UIAlertController {
     class func alertController(with viewType: Type) -> UIAlertController {

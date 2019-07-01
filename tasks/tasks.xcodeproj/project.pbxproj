@@ -127,6 +127,24 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DB261ACA22C96CE600D5C124 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DB37208422A737B50021B2C0 /* CollectionViewController.swift */,
+				DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		DB261ACB22C96D0200D5C124 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */,
+				DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		DB37207622A737B50021B2C0 = {
 			isa = PBXGroup;
 			children = (
@@ -155,11 +173,9 @@
 				DB808FE922BE6E820028A924 /* tasks.entitlements */,
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
-				DB37208422A737B50021B2C0 /* CollectionViewController.swift */,
-				DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */,
 				DB19102C22ADAD43003FB050 /* Models.swift */,
-				DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */,
-				DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */,
+				DB261ACA22C96CE600D5C124 /* Controllers */,
+				DB261ACB22C96D0200D5C124 /* Cells */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
 				DB808FEA22C0059E0028A924 /* mainV2.storyboard */,
 				DB37208922A737B60021B2C0 /* Assets.xcassets */,
