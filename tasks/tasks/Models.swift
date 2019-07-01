@@ -113,6 +113,24 @@ final public class Task: ItemProtocol {
     }
 }
 
+extension String.StringInterpolation {
+    mutating func appendInterpolation(_ task: Task) {
+        var dateString = "no date"
+        if let date = task.dueDate {
+            dateString = date.string(.dateShortTimeShort)
+        }
+        appendInterpolation("""
+            ///
+            task: title \(task.title)
+            alert \(task.alert)
+            dueDate \(dateString)
+            completed \(task.completed)
+            id \(task.document.documentID)
+            ///
+            """)
+    }
+}
+
 enum Type: String {
     case list = "list"
     case task = "task"
@@ -135,4 +153,5 @@ final class TaskViewModel {
         }
     }
 }
+
 

@@ -12,6 +12,7 @@
 		DB19102D22ADAD43003FB050 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB19102C22ADAD43003FB050 /* Models.swift */; };
 		DB2B314622CA38C900EC0C0A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B314522CA38C900EC0C0A /* Constants.swift */; };
 		DB2B314822CA4F2000EC0C0A /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B314722CA4F2000EC0C0A /* Notifications.swift */; };
+		DB2B314A22CA990700EC0C0A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B314922CA990700EC0C0A /* Extensions.swift */; };
 		DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208222A737B50021B2C0 /* AppDelegate.swift */; };
 		DB37208522A737B50021B2C0 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208422A737B50021B2C0 /* CollectionViewController.swift */; };
 		DB37208822A737B50021B2C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB37208622A737B50021B2C0 /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 		DB19102C22ADAD43003FB050 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		DB2B314522CA38C900EC0C0A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DB2B314722CA4F2000EC0C0A /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		DB2B314922CA990700EC0C0A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DB37207F22A737B50021B2C0 /* tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB37208222A737B50021B2C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB37208422A737B50021B2C0 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
 				DB2B314522CA38C900EC0C0A /* Constants.swift */,
+				DB2B314922CA990700EC0C0A /* Extensions.swift */,
 				DB2B314722CA4F2000EC0C0A /* Notifications.swift */,
 				DB19102C22ADAD43003FB050 /* Models.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
@@ -452,6 +455,7 @@
 				DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */,
 				DB2B314822CA4F2000EC0C0A /* Notifications.swift in Sources */,
 				DB37208522A737B50021B2C0 /* CollectionViewController.swift in Sources */,
+				DB2B314A22CA990700EC0C0A /* Extensions.swift in Sources */,
 				DB19102D22ADAD43003FB050 /* Models.swift in Sources */,
 				DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */,
 				DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */,
