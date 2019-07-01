@@ -215,7 +215,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - swipe action extension
 
 extension UIContextualAction {
-    class func itemSwipeAction(_ swipeType: SwipeType, completion: @escaping () -> Void) -> UIContextualAction {
+    internal class func itemSwipeAction(_ swipeType: SwipeType, completion: @escaping () -> Void) -> UIContextualAction {
         let completedAction = UIContextualAction(style: .normal, title: swipeType.rawValue) { (_, _, _) in
             completion()
         }

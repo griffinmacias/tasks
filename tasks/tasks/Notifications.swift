@@ -42,12 +42,48 @@ private extension UNNotificationActionOptions {
     }
 }
 
-private extension UNNotificationCategory {
+extension UNNotificationCategory {
+    enum CategoryIdentifier: String {
+        case task = "TASK"
+    }
+    
     class func task() -> UNNotificationCategory {
-        let completedAction = UNNotificationAction(identifier: "COMPLETED_ACTION", title: "Completed", options: UNNotificationActionOptions.init(.completed))
-        let dismissAction = UNNotificationAction(identifier: "DISMISS_ACTION", title: "Dismiss", options: UNNotificationActionOptions.init(.dismiss))
-        let taskCategory = UNNotificationCategory(identifier: "TASK", actions: [completedAction, dismissAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        let completedAction = UNNotificationAction.action(with: .completed)
+        let dismissAction = UNNotificationAction.action(with: .dismiss)
+        let taskCategory = UNNotificationCategory(identifier: CategoryIdentifier.task.rawValue, actions: [completedAction, dismissAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         return taskCategory
+    }
+}
+
+extension UNNotificationResponse {
+    var actionIdentifierType: UNNotificationAction.ActionIdentifier {
+        switch actionIdentifier {
+        case UNNotificationAction.ActionIdentifier.completed.rawValue:
+            return .completed
+        default:
+            return .dismiss
+        }
+    }
+}
+
+extension UNNotificationAction {
+    enum ActionIdentifier: String {
+        case completed = "COMPLETED_ACTION"
+        case dismiss = "DISMISS_ACTION"
+        var pretty: String {
+            switch self {
+            case .completed:
+                return "Completed"
+            case .dismiss:
+                return "Dismiss"
+            }
+        }
+    }
+    
+    class func action(with identifier: ActionIdentifier) -> UNNotificationAction {
+        let actionOptions: UNNotificationActionOptions.ActionType = identifier == .completed ? .completed : .dismiss
+        let action = UNNotificationAction(identifier: identifier.rawValue, title: identifier.pretty, options: UNNotificationActionOptions(actionOptions))
+        return action
     }
 }
 
@@ -62,15 +98,16 @@ public extension UNNotificationRequest {
 }
 
 private extension UNMutableNotificationContent {
+    enum NotificationTitle: String {
+        case task = "Task"
+    }
     convenience init(_ task: Task) {
         self.init()
-        //TODO: create some constant
-        title = "Task"
+        title = NotificationTitle.task.rawValue
         body = task.title
         sound = .default
         badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
         userInfo = ["id": task.document.documentID]
-        //TODO: create some constant
-        categoryIdentifier = "TASK"
+        categoryIdentifier = UNNotificationCategory.CategoryIdentifier.task.rawValue
     }
 }

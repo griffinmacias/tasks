@@ -20,9 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let center = UNUserNotificationCenter.current()
         center.delegate = self
+        let taskCategory = UNNotificationCategory.task()
+        center.setNotificationCategories([taskCategory])
         center.requestAuthorization(options: [.badge, .sound, .alert]) { (granted, error) in
             print("Granted \(granted), Error \(error.debugDescription)")
-//            UIApplication.shared.registerForRemoteNotifications()
         }
         return true
     }
@@ -56,6 +57,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        guard let taskID = userInfo["id"] as? String else {
+            completionHandler()
+            return
+        }
+        switch response.actionIdentifierType {
+        case .completed:
+            //set task to be completed
+            let document = Firestore.firestore().collection("tasks").document(taskID)
+            document.updateData(["completed": true]) { [weak self] (error) in
+                guard error == nil else {
+                    print("error occurred while update data for \(taskID) error \(error.debugDescription)")
+                    return
+                }
+                self?.updateBadgeCount()
+            }
+            
+        case .dismiss:
+            //do nothing
+            break
+        }
+        completionHandler()
+    }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("notification willPresent is triggered")
