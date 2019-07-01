@@ -10,28 +10,6 @@ import Foundation
 import Firebase
 import UserNotifications
 
-public extension UNNotificationRequest {
-    class func configure(with task: Task) -> UNNotificationRequest? {
-        guard let dueDate = task.dueDate else { return nil}
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        print("date to be triggered \(task.dueDate!)")
-        return UNNotificationRequest(identifier: task.document.documentID, content: UNMutableNotificationContent(task), trigger: trigger)
-    }
-}
-
-extension UNMutableNotificationContent {
-    convenience init(_ task: Task) {
-        self.init()
-        self.title = "Task"
-        self.body = task.title
-        self.sound = .default
-        self.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
-        self.userInfo = ["id": task.document.documentID]
-    }
-    
-}
-
 final class Metadata {
     var roles: [String:[String]] = [:]
 }
@@ -126,31 +104,13 @@ final public class Task: ItemProtocol {
             //TODO: make this look better
             if key == "dueDate" {
                 print("scheduled notification")
-                weakSelf.schedulePendingNotificationRequest()
+                TaskNotifications.schedulePendingNotificationRequest(with: weakSelf)
             } else if key == "alert" && !weakSelf.alert {
                 print("unscheduled notification")
-                weakSelf.unschedulePendingNotificationRequest()
+                TaskNotifications.schedulePendingNotificationRequest(with: weakSelf)
             }
         }
     }
-    
-    //MARK: - notifications
-    internal func schedulePendingNotificationRequest() {
-        guard let request = UNNotificationRequest.configure(with: self) else { return }
-        unschedulePendingNotificationRequest()
-        UNUserNotificationCenter.current().add(request) { (error) in
-            if let error = error {
-                print("error adding notification request \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    internal func unschedulePendingNotificationRequest() {
-        print("unschedule pending notification request")
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [document.documentID])
-    }
-    
-    
 }
 
 enum Type: String {
