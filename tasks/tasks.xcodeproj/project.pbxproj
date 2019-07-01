@@ -10,6 +10,7 @@
 		62D4F90AF81ED060D38E398F /* Pods_tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8FFFCD181D11A634A5C2FDF /* Pods_tasks.framework */; };
 		7C48E615B56FFA2D3C418F95 /* Pods_tasksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF459D108F70798D26762F4 /* Pods_tasksTests.framework */; };
 		DB19102D22ADAD43003FB050 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB19102C22ADAD43003FB050 /* Models.swift */; };
+		DB2B314622CA38C900EC0C0A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2B314522CA38C900EC0C0A /* Constants.swift */; };
 		DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208222A737B50021B2C0 /* AppDelegate.swift */; };
 		DB37208522A737B50021B2C0 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB37208422A737B50021B2C0 /* CollectionViewController.swift */; };
 		DB37208822A737B50021B2C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB37208622A737B50021B2C0 /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 		C8FFFCD181D11A634A5C2FDF /* Pods_tasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72A085CB231598591464DF7 /* Pods-tasksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tasksUITests.release.xcconfig"; path = "Target Support Files/Pods-tasksUITests/Pods-tasksUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB19102C22ADAD43003FB050 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		DB2B314522CA38C900EC0C0A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DB37207F22A737B50021B2C0 /* tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB37208222A737B50021B2C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB37208422A737B50021B2C0 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				DB261ACB22C96D0200D5C124 /* Cells */,
 				DB37208222A737B50021B2C0 /* AppDelegate.swift */,
 				DB9B6A9A22A9C09A00364558 /* Network.swift */,
+				DB2B314522CA38C900EC0C0A /* Constants.swift */,
 				DB19102C22ADAD43003FB050 /* Models.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
 				DB808FEA22C0059E0028A924 /* mainV2.storyboard */,
@@ -448,6 +451,7 @@
 				DB19102D22ADAD43003FB050 /* Models.swift in Sources */,
 				DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */,
 				DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */,
+				DB2B314622CA38C900EC0C0A /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
