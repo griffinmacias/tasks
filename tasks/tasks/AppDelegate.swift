@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         center.setNotificationCategories([taskCategory])
         center.requestAuthorization(options: [.badge, .sound, .alert]) { (granted, error) in
             print("Granted \(granted), Error \(error.debugDescription)")
+            DispatchQueue.main.async {
+                NotificationBadgeHandler.badgeCount = 0
+            }
         }
         return true
     }
@@ -36,9 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        //check due dates and add badges when necessary
-        updateBadgeCount()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -67,15 +67,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         switch response.actionIdentifierType {
         case .completed:
             //set task to be completed
+            NotificationBadgeHandler.badgeCount -= 1
             let document = Firestore.firestore().collection("tasks").document(taskID)
-            document.updateData(["completed": true]) { [weak self] (error) in
-                guard error == nil else {
-                    print("error occurred while update data for \(taskID) error \(error.debugDescription)")
-                    return
-                }
-                self?.updateBadgeCount()
-            }
-            
+            document.updateData(["completed": true])
         case .dismiss:
             //do nothing
             break
@@ -84,20 +78,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("notification willPresent is triggered")
         completionHandler([.alert])
     }
     
-}
-
-extension AppDelegate {
-    internal func updateBadgeCount() {
-        Network.shared.numberOfDueDatesPassed(completion: { (count) in
-            DispatchQueue.main.async {
-                print("number of due dates passed \(count)")
-                UIApplication.shared.applicationIconBadgeNumber = count
-            }
-        })
-    }
 }
 

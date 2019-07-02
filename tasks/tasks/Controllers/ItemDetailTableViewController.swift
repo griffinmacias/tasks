@@ -67,9 +67,8 @@ class ItemDetailTableViewController: UITableViewController {
                 task.title = santizedText
             }
         }
-        if !switchView.isOn && task.alert {
+        if !showDueDate && task.alert {
             task.dueDate = nil
-            task.alert = false
         } else {
             guard task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
             task.dueDate = datePickerView.date
@@ -102,14 +101,14 @@ class ItemDetailTableViewController: UITableViewController {
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
     
+    //MARK: - actions
+    
     @IBAction func dateChanged(_ sender: UIDatePicker) {
         dateLabel.text = sender.date.string(.dateShortTimeShort)
     }
     
     @IBAction func didTapSwitchView(_ sender: UISwitch) {
-        
         showDueDate = sender.isOn
-        task?.alert = true
     }
     
 }

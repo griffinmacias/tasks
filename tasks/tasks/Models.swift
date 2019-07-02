@@ -52,62 +52,71 @@ final class List: ItemProtocol {
 
 final public class Task: ItemProtocol {
     
+    enum FieldType: String {
+        case title = "title"
+        case completed = "completed"
+        case alert = "alert"
+        case dueDate = "dueDate"
+    }
+    
     public var title: String {
         didSet {
-            update("title", for: title)
+            update(.title, for: title)
         }
     }
     
     public var completed: Bool {
         didSet {
-            update("completed", for: completed)
+            TaskScheduleManager.handle(self, scheduleType: .update(.completed))
+            update(.completed, for: completed)
         }
     }
     
     public var alert: Bool {
         didSet {
-            update("alert", for: alert)
+            TaskScheduleManager.handle(self, scheduleType: .update(.alert))
+            update(.alert, for: alert)
         }
     }
     
     public var dueDate: Date? {
-        didSet {
-            guard let dueDate = dueDate else {
-                update("alert", for: false)
+        willSet {
+            guard let newDueDate = newValue else {
+                alert = false
                 return
             }
-            update("dueDate", for: dueDate)
-            update("alert", for: true)
+            alert = true
+            TaskScheduleManager.prepare(task: self, for: newDueDate)
+        }
+        didSet {
+            guard let dueDate = dueDate else {
+                update(.alert, for: false)
+                return
+            }
+            TaskScheduleManager.handle(self, scheduleType: .update(.dueDate))
+            update(.dueDate, for: dueDate)
+            update(.alert, for: true)
         }
     }
     
     internal var document: DocumentSnapshot
 
     init(_ document: QueryDocumentSnapshot) {
-        self.title = document.data()["title"] as? String ?? "no title"
+        self.title = document.data()[FieldType.title.rawValue] as? String ?? "no title"
         self.document = document
-        self.completed = document.data()["completed"] as? Bool ?? false
-        self.dueDate = (document.data()["dueDate"] as? Timestamp)?.dateValue()
-        self.alert = document.data()["alert"] as? Bool ?? false
+        self.completed = document.data()[FieldType.completed.rawValue] as? Bool ?? false
+        self.dueDate = (document.data()[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue()
+        self.alert = document.data()[FieldType.alert.rawValue] as? Bool ?? false
     }
     
     //MARK: - network
     
-    func update(_ key: String, for value: Any) {
+    func update(_ fieldType: FieldType, for value: Any) {
         
-        document.reference.updateData([key: value]) { [weak self] (error) in
+        document.reference.updateData([fieldType.rawValue: value]) { [weak self] (error) in
             if let error = error {
                 print("error updating obj \(self?.title ?? "(no object found)") \(error.localizedDescription)")
                 return
-            }
-            guard let weakSelf = self else { return }
-            //TODO: make this look better
-            if key == "dueDate" {
-                print("scheduled notification")
-                TaskNotifications.schedulePendingNotificationRequest(with: weakSelf)
-            } else if key == "alert" && !weakSelf.alert {
-                print("unscheduled notification")
-                TaskNotifications.schedulePendingNotificationRequest(with: weakSelf)
             }
         }
     }
