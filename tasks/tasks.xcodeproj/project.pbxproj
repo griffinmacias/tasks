@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		247A131622C03CB900BF7F58 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247A131522C03CB900BF7F58 /* ProfileTableViewController.swift */; };
 		62D4F90AF81ED060D38E398F /* Pods_tasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8FFFCD181D11A634A5C2FDF /* Pods_tasks.framework */; };
 		7C48E615B56FFA2D3C418F95 /* Pods_tasksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF459D108F70798D26762F4 /* Pods_tasksTests.framework */; };
 		DB19102D22ADAD43003FB050 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB19102C22ADAD43003FB050 /* Models.swift */; };
@@ -22,7 +23,7 @@
 		DB3720A322A737B70021B2C0 /* tasksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3720A222A737B70021B2C0 /* tasksUITests.swift */; };
 		DB3720B122A738F00021B2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */; };
 		DB5277E422B84A720058FFED /* ItemDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */; };
-		DB808FEC22C0059E0028A924 /* mainV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB808FEA22C0059E0028A924 /* mainV2.storyboard */; };
+		DB808FEC22C0059E0028A924 /* MainV2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB808FEA22C0059E0028A924 /* MainV2.storyboard */; };
 		DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */; };
 		DB9B6A9722A8A01500364558 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */; };
 		DB9B6A9B22A9C09A00364558 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B6A9A22A9C09A00364558 /* Network.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		0988BF018D94B596C17B0653 /* Pods_tasksUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tasksUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		247A131522C03CB900BF7F58 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		3AF459D108F70798D26762F4 /* Pods_tasksTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tasksTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79DE4C469E5AE71453CD8925 /* Pods-tasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tasks.release.xcconfig"; path = "Target Support Files/Pods-tasks/Pods-tasks.release.xcconfig"; sourceTree = "<group>"; };
 		822BC01970F02E6715BBAB16 /* Pods-tasks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tasks.debug.xcconfig"; path = "Target Support Files/Pods-tasks/Pods-tasks.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,7 +78,7 @@
 		DB3720B022A738F00021B2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB5277E322B84A720058FFED /* ItemDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTableViewController.swift; sourceTree = "<group>"; };
 		DB808FE922BE6E820028A924 /* tasks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tasks.entitlements; sourceTree = "<group>"; };
-		DB808FEB22C0059E0028A924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/mainV2.storyboard; sourceTree = "<group>"; };
+		DB808FEB22C0059E0028A924 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainV2.storyboard; sourceTree = "<group>"; };
 		DB9B6A9422A89FE800364558 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9622A8A01500364558 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		DB9B6A9A22A9C09A00364558 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -186,7 +188,8 @@
 				DB2B314722CA4F2000EC0C0A /* Notifications.swift */,
 				DB19102C22ADAD43003FB050 /* Models.swift */,
 				DB37208622A737B50021B2C0 /* Main.storyboard */,
-				DB808FEA22C0059E0028A924 /* mainV2.storyboard */,
+				DB808FEA22C0059E0028A924 /* MainV2.storyboard */,
+				247A131522C03CB900BF7F58 /* ProfileTableViewController.swift */,
 				DB37208922A737B60021B2C0 /* Assets.xcassets */,
 				DB37208B22A737B60021B2C0 /* LaunchScreen.storyboard */,
 				DB37208E22A737B60021B2C0 /* Info.plist */,
@@ -334,7 +337,7 @@
 				DB3720B122A738F00021B2C0 /* GoogleService-Info.plist in Resources */,
 				DB37208A22A737B60021B2C0 /* Assets.xcassets in Resources */,
 				DB37208822A737B50021B2C0 /* Main.storyboard in Resources */,
-				DB808FEC22C0059E0028A924 /* mainV2.storyboard in Resources */,
+				DB808FEC22C0059E0028A924 /* MainV2.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +461,7 @@
 				DB2B314A22CA990700EC0C0A /* Extensions.swift in Sources */,
 				DB19102D22ADAD43003FB050 /* Models.swift in Sources */,
 				DB37208322A737B50021B2C0 /* AppDelegate.swift in Sources */,
+				247A131622C03CB900BF7F58 /* ProfileTableViewController.swift in Sources */,
 				DB9B6A9522A89FE800364558 /* ListTableViewCell.swift in Sources */,
 				DB2B314622CA38C900EC0C0A /* Constants.swift in Sources */,
 			);
@@ -511,12 +515,12 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		DB808FEA22C0059E0028A924 /* mainV2.storyboard */ = {
+		DB808FEA22C0059E0028A924 /* MainV2.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				DB808FEB22C0059E0028A924 /* Base */,
 			);
-			name = mainV2.storyboard;
+			name = MainV2.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
