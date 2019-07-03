@@ -9,13 +9,18 @@
 import Foundation
 import FirebaseFirestore
 
+
 final class Network {
+    
+    typealias Completion = () -> Void
+    typealias ItemsCompletion = ([ItemProtocol]) -> Void
+    typealias CountCompletion = (Int) -> Void
     
     static let shared = Network()
     private var listener: ListenerRegistration?
     private init() {}
     
-    public func fetch(with type: Type, list: List? = nil, completion: @escaping ([ItemProtocol]) -> Void) {
+    public func fetch(with type: Type, list: List? = nil, completion: @escaping ItemsCompletion) {
         let query = CollectionReference.query(with: type, list: list)
         
         listener = query.addSnapshotListener { (snapshot, error) in
@@ -36,7 +41,7 @@ final class Network {
         }
     }
     
-    public func numberOfDueDatesPassed(completion:@escaping (Int) -> Void) {
+    public func numberOfDueDatesPassed(completion:@escaping CountCompletion) {
         let query = CollectionReference.passedDueDates(for: .task)
         listener = query.addSnapshotListener({ (snapshot, error) in
             guard let snapshot = snapshot else {
@@ -46,6 +51,27 @@ final class Network {
             let count = snapshot.documents.count
             completion(count)
         })
+    }
+    
+    public func update(_ document: DocumentSnapshot, with fields: [Task.FieldType: Any], completion: Completion? = nil) {
+        
+        var params: [String: Any] = [:]
+        fields.forEach { (key, value) in
+            params[key.rawValue] = value
+        }
+
+        document.reference.updateData(params) { (error) in
+            if let error = error {
+                print("error updating obj \(String(describing: document.data()?[Task.FieldType.title.rawValue])) \(error.localizedDescription)")
+                if let completion = completion {
+                    completion()
+                }
+                return
+            }
+            if let completion = completion {
+                completion()
+            }
+        }
     }
 }
 

@@ -43,6 +43,7 @@ class ItemDetailTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if let task = task {
             titleTextField.text = task.title
             showDueDate = task.alert
@@ -59,20 +60,38 @@ class ItemDetailTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //save the info
+        //might need to change if deleted the task
         guard let task = task else { return }
         
-        if let textFieldText = titleTextField.text {
-            let santizedText = textFieldText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if !showDueDate && task.alert {
+            task.dueDate = nil
+        } else {
+            guard !task.alert && task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
+            task.dueDate = datePickerView.date
+        }
+    }
+    
+    private func handleUpdates(with task: Task) {
+        //title
+        handleTitleUpdate(with: task, titleTextField.text)
+        //alert
+        
+        //due date
+    }
+    
+    private func handleTitleUpdate(with task: Task, _ titleText: String?) {
+        //title update
+        if let titleText = titleText {
+            let santizedText = titleText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if santizedText.count > 0 && task.title != santizedText {
                 task.title = santizedText
             }
         }
-        if !showDueDate && task.alert {
-            task.dueDate = nil
-        } else {
-            guard task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
-            task.dueDate = datePickerView.date
-        }
+    }
+    
+    private func handleAlertUpdate(with task: Task, _ alert: Bool) {
+        guard showDueDate != task.alert else { return }
+        task.alert = showDueDate
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

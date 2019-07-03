@@ -52,7 +52,10 @@ final class List: ItemProtocol {
 
 final public class Task: ItemProtocol {
     
-    enum FieldType: String {
+    var updatedFields: [FieldType: Any] = [:]
+    
+    public enum FieldType: String {
+        case document = "document"
         case title = "title"
         case completed = "completed"
         case alert = "alert"
@@ -60,43 +63,61 @@ final public class Task: ItemProtocol {
     }
     
     public var title: String {
-        didSet {
-            update(.title, for: title)
+        willSet {
+            if title != newValue {
+                updatedFields[.title] = newValue
+            }
         }
     }
     
     public var completed: Bool {
+        willSet {
+            if completed != newValue {
+                updatedFields[.completed] = newValue
+            }
+        }
         didSet {
             TaskScheduleManager.handle(self, scheduleType: .update(.completed))
-            update(.completed, for: completed)
+//            update(.completed, for: completed)
         }
     }
     
     public var alert: Bool {
+        willSet {
+            if alert != newValue {
+                updatedFields[.alert] = newValue
+            }
+        }
         didSet {
             TaskScheduleManager.handle(self, scheduleType: .update(.alert))
-            update(.alert, for: alert)
+//            update(.alert, for: alert)
         }
     }
     
     public var dueDate: Date? {
         willSet {
-            guard let newDueDate = newValue else {
-                alert = false
+            guard let dueDate = dueDate, let newDueDate = newValue else {
                 return
             }
-            alert = true
+            if dueDate.timeIntervalSinceNow != newDueDate.timeIntervalSinceNow {
+                updatedFields[.dueDate] = newDueDate
+            }
             TaskScheduleManager.prepare(task: self, for: newDueDate)
         }
         didSet {
             guard let dueDate = dueDate else {
-                update(.alert, for: false)
+//                update(.alert, for: false)
                 return
             }
             TaskScheduleManager.handle(self, scheduleType: .update(.dueDate))
-            update(.dueDate, for: dueDate)
-            update(.alert, for: true)
+//            update(.dueDate, for: dueDate)
+//            update(.alert, for: true)
         }
+    }
+    
+    public func save() {
+        guard updatedFields.count != 0 else { return }
+        updatedFields[.document] = document
     }
     
     internal var document: DocumentSnapshot
@@ -108,18 +129,15 @@ final public class Task: ItemProtocol {
         self.dueDate = (document.data()[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue()
         self.alert = document.data()[FieldType.alert.rawValue] as? Bool ?? false
     }
-    
-    //MARK: - network
-    
-    func update(_ fieldType: FieldType, for value: Any) {
-        
-        document.reference.updateData([fieldType.rawValue: value]) { [weak self] (error) in
-            if let error = error {
-                print("error updating obj \(self?.title ?? "(no object found)") \(error.localizedDescription)")
-                return
-            }
-        }
+}
+
+extension Task: Equatable {
+    public static func == (lhs: Task, rhs: Task) -> Bool {
+        //eventually will need to add assignee check and isDeleted check
+        return lhs.title == rhs.title && lhs.alert == rhs.alert && lhs.dueDate == rhs.dueDate && lhs.completed == rhs.completed
     }
+    
+    
 }
 
 extension String.StringInterpolation {
