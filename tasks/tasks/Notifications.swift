@@ -64,9 +64,12 @@ struct TaskScheduleManager: NotificationScheduling {
         }
     }
     
-    static func prepare(task: Task, for newDueDate: Date) {
+    static func prepare(task: Task) {
         //if the old due date already went off, we need to decrement the badge count
-        guard task.alert, !task.completed, let oldDueDate = task.dueDate, oldDueDate.timeIntervalSinceNow < 0, newDueDate.timeIntervalSinceNow > 0 else { return }
+        guard task.alert, !task.completed,
+            let newDueDate = task.dueDate,
+            let oldDueDate = task.document.data()?[Task.FieldType.dueDate.rawValue] as? Date,
+            oldDueDate.timeIntervalSinceNow < 0, newDueDate.timeIntervalSinceNow > 0 else { return }
         NotificationBadgeHandler.badgeCount -= 1
     }
     
@@ -103,7 +106,7 @@ struct TaskScheduleManager: NotificationScheduling {
     }
     
     private static func handleDueDate(for task: Task) {
-        guard let dueDate = task.dueDate else { return }
+        guard task.alert, let dueDate = task.dueDate else { return }
         //just in case
         TaskNotifications.unschedulePendingNotificationRequest(for: task)
         //if the due date is in the future, schedule it

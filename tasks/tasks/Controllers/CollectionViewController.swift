@@ -188,7 +188,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
         guard let item = self.collection[indexPath.row] as? Task, !item.completed else { return nil }
         let completedAction = UIContextualAction.itemSwipeAction(.left) {
             item.completed = true
-            item.document.reference.updateData(["completed": item.completed])
+            item.save()
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .checkmark
         }
@@ -200,6 +200,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
         guard let item = self.collection[indexPath.row] as? Task, item.completed else { return nil }
         let undoAction = UIContextualAction.itemSwipeAction(.right) {
             item.completed = false
+            item.save()
             let cell = tableView.cellForRow(at: indexPath)
             cell?.accessoryType = .none
         }

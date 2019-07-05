@@ -76,10 +76,6 @@ final public class Task: ItemProtocol {
                 updatedFields[.completed] = newValue
             }
         }
-        didSet {
-            TaskScheduleManager.handle(self, scheduleType: .update(.completed))
-//            update(.completed, for: completed)
-        }
     }
     
     public var alert: Bool {
@@ -88,36 +84,37 @@ final public class Task: ItemProtocol {
                 updatedFields[.alert] = newValue
             }
         }
-        didSet {
-            TaskScheduleManager.handle(self, scheduleType: .update(.alert))
-//            update(.alert, for: alert)
-        }
     }
     
     public var dueDate: Date? {
         willSet {
-            guard let dueDate = dueDate, let newDueDate = newValue else {
-                return
+            if dueDate?.timeIntervalSinceNow != newValue?.timeIntervalSinceNow {
+                updatedFields[.dueDate] = newValue
             }
-            if dueDate.timeIntervalSinceNow != newDueDate.timeIntervalSinceNow {
-                updatedFields[.dueDate] = newDueDate
-            }
-            TaskScheduleManager.prepare(task: self, for: newDueDate)
-        }
-        didSet {
-            guard let dueDate = dueDate else {
-//                update(.alert, for: false)
-                return
-            }
-            TaskScheduleManager.handle(self, scheduleType: .update(.dueDate))
-//            update(.dueDate, for: dueDate)
-//            update(.alert, for: true)
         }
     }
     
     public func save() {
+        //make sure there are fields to update
         guard updatedFields.count != 0 else { return }
-        updatedFields[.document] = document
+        //schedule
+        scheduleIfNeeded()
+        //update
+        Network.shared.update(document, with: updatedFields)
+        //clear newly updated fields
+        updatedFields = [:]
+    }
+    
+    private func scheduleIfNeeded() {
+        //schedule notifications
+        //if alert or due date updates lets update the due date
+        if updatedFields[.alert] != nil || updatedFields[.dueDate] != nil {
+            TaskScheduleManager.prepare(task: self)
+            TaskScheduleManager.handle(self, scheduleType: .update(.dueDate))
+            //if completed, lets unschedule any notifications
+        } else if let _ = updatedFields[.completed] {
+            TaskScheduleManager.handle(self, scheduleType: .update(.completed))
+        }
     }
     
     internal var document: DocumentSnapshot

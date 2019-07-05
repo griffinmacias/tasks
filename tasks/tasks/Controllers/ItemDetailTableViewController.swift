@@ -30,10 +30,10 @@ class ItemDetailTableViewController: UITableViewController {
             itemDetailTableView.endUpdates()
         }
     }
-    private var showDueDate: Bool = false {
+    private var showAlert: Bool = false {
         didSet {
-            switchView.isOn = showDueDate
-            if !showDueDate {
+            switchView.isOn = showAlert
+            if !showAlert {
                 showPicker = false
             }
             itemDetailTableView.beginUpdates()
@@ -46,7 +46,7 @@ class ItemDetailTableViewController: UITableViewController {
         
         if let task = task {
             titleTextField.text = task.title
-            showDueDate = task.alert
+            showAlert = task.alert
         }
         itemDetailTableView.tableFooterView = UIView()
         guard let dueDate = task?.dueDate else {
@@ -62,36 +62,37 @@ class ItemDetailTableViewController: UITableViewController {
         //save the info
         //might need to change if deleted the task
         guard let task = task else { return }
-        
-        if !showDueDate && task.alert {
-            task.dueDate = nil
-        } else {
-            guard !task.alert && task.dueDate?.timeIntervalSinceReferenceDate != datePickerView.date.timeIntervalSinceReferenceDate else { return }
-            task.dueDate = datePickerView.date
-        }
+        handleUpdates(with: task)
     }
     
     private func handleUpdates(with task: Task) {
         //title
         handleTitleUpdate(with: task, titleTextField.text)
         //alert
-        
+        handleAlertUpdate(with: task, showAlert)
         //due date
+        handleDueDate(with: task, datePickerView)
+        //save
+        task.save()
+        
     }
     
     private func handleTitleUpdate(with task: Task, _ titleText: String?) {
         //title update
         if let titleText = titleText {
             let santizedText = titleText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            if santizedText.count > 0 && task.title != santizedText {
+            if santizedText.count > 0 {
                 task.title = santizedText
             }
         }
     }
     
-    private func handleAlertUpdate(with task: Task, _ alert: Bool) {
-        guard showDueDate != task.alert else { return }
-        task.alert = showDueDate
+    private func handleAlertUpdate(with task: Task, _ showAlert: Bool) {
+        task.alert = showAlert
+    }
+    
+    private func handleDueDate(with task: Task, _ pickerView: UIDatePicker) {
+        task.dueDate = pickerView.date
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -107,7 +108,7 @@ class ItemDetailTableViewController: UITableViewController {
         
         switch (indexPath.section, indexPath.row) {
         case (1, 1):
-            if !showDueDate {
+            if !showAlert {
                 return 0
             }
         case (1, 2):
@@ -127,7 +128,7 @@ class ItemDetailTableViewController: UITableViewController {
     }
     
     @IBAction func didTapSwitchView(_ sender: UISwitch) {
-        showDueDate = sender.isOn
+        showAlert = sender.isOn
     }
     
 }
