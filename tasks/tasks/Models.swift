@@ -17,29 +17,30 @@ final class Metadata {
 protocol ItemProtocol {
     var title: String { get set }
 //    var metadata: Metadata { get set }
-    var document: DocumentSnapshot { get set }
-    init(_ document: QueryDocumentSnapshot)
+    var document: DocumentSnapshot? { get set }
+    init(_ document: QueryDocumentSnapshot?)
 }
 
 final class List: ItemProtocol {
-    
+    var document: DocumentSnapshot?
+
     public var title: String {
         didSet {
             //network call?
         }
     }
-    internal var document: DocumentSnapshot
+    
     public var tasks: [Task] = []
 //    public var metadata: Metadata
-    public init(_ document: QueryDocumentSnapshot) {
+    public init(_ document: QueryDocumentSnapshot?) {
         self.document = document
-        self.title = document.data()["title"] as? String ?? "no title"
+        self.title = document?.data()["title"] as? String ?? "no title"
 //        self.metadata = Metadata()
     }
     
     public func add(_ task: String, completion: @escaping () -> Void) {
         let dict = ["title": task]
-        document.reference.updateData(["tasks":[dict]]) { (_) in
+        document?.reference.updateData(["tasks":[dict]]) { (_) in
             completion()
         }
     }
@@ -50,7 +51,7 @@ final class List: ItemProtocol {
     
 }
 
-final public class Task: ItemProtocol {
+public class Task: ItemProtocol {
     
     var updatedFields: [FieldType: Any] = [:]
     
@@ -109,7 +110,6 @@ final public class Task: ItemProtocol {
         //schedule notifications
         //if alert or due date updates lets update the due date
         if updatedFields[.alert] != nil || updatedFields[.dueDate] != nil {
-            TaskScheduleManager.prepare(task: self)
             TaskScheduleManager.handle(self, scheduleType: .update(.dueDate))
             //if completed, lets unschedule any notifications
         } else if let _ = updatedFields[.completed] {
@@ -117,14 +117,14 @@ final public class Task: ItemProtocol {
         }
     }
     
-    internal var document: DocumentSnapshot
+    var document: DocumentSnapshot?
 
-    init(_ document: QueryDocumentSnapshot) {
-        self.title = document.data()[FieldType.title.rawValue] as? String ?? "no title"
+    required init(_ document: QueryDocumentSnapshot? = nil) {
+        self.title = document?.data()[FieldType.title.rawValue] as? String ?? "no title"
         self.document = document
-        self.completed = document.data()[FieldType.completed.rawValue] as? Bool ?? false
-        self.dueDate = (document.data()[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue()
-        self.alert = document.data()[FieldType.alert.rawValue] as? Bool ?? false
+        self.completed = document?.data()[FieldType.completed.rawValue] as? Bool ?? false
+        self.dueDate = (document?.data()[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue()
+        self.alert = document?.data()[FieldType.alert.rawValue] as? Bool ?? false
     }
 }
 
@@ -149,7 +149,7 @@ extension String.StringInterpolation {
             alert \(task.alert)
             dueDate \(dateString)
             completed \(task.completed)
-            id \(task.document.documentID)
+            id \(task.document?.documentID ?? "no document")
             ///
             """)
     }

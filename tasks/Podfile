@@ -10,6 +10,8 @@ target 'tasks' do
 	pod 'Firebase/Core'
 	pod 'FirebaseUI'
 	pod 'Firebase/Firestore'
+	pod 'Quick'
+	pod 'Nimble'
 
   target 'tasksTests' do
     inherit! :search_paths

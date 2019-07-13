@@ -64,12 +64,16 @@ struct TaskScheduleManager: NotificationScheduling {
         }
     }
     
-    static func prepare(task: Task) {
+    private static func prepare(_ task: Task) {
         //if the old due date already went off, we need to decrement the badge count
         guard task.alert, !task.completed,
             let newDueDate = task.dueDate,
-            let oldDueDate = task.document.data()?[Task.FieldType.dueDate.rawValue] as? Date,
-            oldDueDate.timeIntervalSinceNow < 0, newDueDate.timeIntervalSinceNow > 0 else { return }
+            let oldDueDate = task.document?.data()?[Task.FieldType.dueDate.rawValue] as? Date else { return }
+        prepare(newDueDate, oldDueDate)
+    }
+    
+    static func prepare(_ oldDueDate: Date, _ newDueDate: Date) {
+       guard  oldDueDate.timeIntervalSinceNow < 0, newDueDate.timeIntervalSinceNow > 0 else { return }
         NotificationBadgeHandler.badgeCount -= 1
     }
     
@@ -89,6 +93,9 @@ struct TaskScheduleManager: NotificationScheduling {
         case true:
             handleDueDate(for: task)
         case false:
+            if let dueDate = task.dueDate, dueDate.timeIntervalSinceNow < 0 {
+                NotificationBadgeHandler.badgeCount-=1
+            }
             TaskNotifications.unschedulePendingNotificationRequest(for: task)
         }
     }
@@ -101,11 +108,12 @@ struct TaskScheduleManager: NotificationScheduling {
             }
             TaskNotifications.unschedulePendingNotificationRequest(for: task)
         } else {
-            handleAlert(for: task)
+            handleDueDate(for: task)
         }
     }
     
     private static func handleDueDate(for task: Task) {
+        TaskScheduleManager.prepare(task)
         guard task.alert, let dueDate = task.dueDate else { return }
         //just in case
         TaskNotifications.unschedulePendingNotificationRequest(for: task)
@@ -134,7 +142,8 @@ struct TaskNotifications {
     
     public static func unschedulePendingNotificationRequest(for task: Task) {
         print("unschedule pending notification request")
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [task.document.documentID])
+        guard let document = task.document else { return }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [document.documentID])
     }
 }
 
@@ -200,11 +209,11 @@ extension UNNotificationAction {
 
 public extension UNNotificationRequest {
     class func configure(for task: Task) -> UNNotificationRequest? {
-        guard let dueDate = task.dueDate, task.alert else { return nil }
+        guard let dueDate = task.dueDate, task.alert, let documentID = task.document?.documentID else { return nil }
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         print("date to be triggered \(task.dueDate!)")
-        return UNNotificationRequest(identifier: task.document.documentID, content: UNMutableNotificationContent(task), trigger: trigger)
+        return UNNotificationRequest(identifier: documentID, content: UNMutableNotificationContent(task), trigger: trigger)
     }
 }
 
@@ -220,7 +229,7 @@ private extension UNMutableNotificationContent {
         //TODO: need to change this
         //to increment the badge count
         badge = (NotificationBadgeHandler.badgeCount + 1) as NSNumber
-        userInfo = ["id": task.document.documentID]
+        userInfo = ["id": task.document?.documentID ?? "no document"]
         categoryIdentifier = UNNotificationCategory.CategoryIdentifier.task.rawValue
     }
 }

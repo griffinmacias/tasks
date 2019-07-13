@@ -112,9 +112,9 @@ class CollectionViewController: UIViewController {
                     self?.getDocuments()
                 })
             case .task:
-                guard let list = weakSelf.list else { return }
+                guard let list = weakSelf.list, let documentID = list.document?.documentID else { return }
                 let collection = Firestore.firestore().collection(weakSelf.type.rawValue + "s")
-                let collectionJSON = ["title": title, "completed": false, "listid": list.document.documentID] as [String : Any]
+                let collectionJSON = ["title": title, "completed": false, "listid": documentID] as [String : Any]
                 collection.addDocument(data: collectionJSON, completion: { (error) in
                     guard error != nil else { return }
                     self?.getDocuments()

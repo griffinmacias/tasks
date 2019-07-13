@@ -53,16 +53,16 @@ final class Network {
         })
     }
     
-    public func update(_ document: DocumentSnapshot, with fields: [Task.FieldType: Any], completion: Completion? = nil) {
+    public func update(_ document: DocumentSnapshot?, with fields: [Task.FieldType: Any], completion: Completion? = nil) {
         
         var params: [String: Any] = [:]
         fields.forEach { (key, value) in
             params[key.rawValue] = value
         }
 
-        document.reference.updateData(params) { (error) in
+        document?.reference.updateData(params) { (error) in
             if let error = error {
-                print("error updating obj \(String(describing: document.data()?[Task.FieldType.title.rawValue])) \(error.localizedDescription)")
+                print("error updating obj \(String(describing: document?.data()?[Task.FieldType.title.rawValue])) \(error.localizedDescription)")
                 if let completion = completion {
                     completion()
                 }
@@ -78,8 +78,8 @@ final class Network {
 extension Query {
     class func query(with type: Type, list: List? = nil) -> Query {
         var query: Query = Firestore.firestore().collection(type.rawValue + "s")
-        if type == .task, let list = list {
-            query = query.whereField("listid", isEqualTo: list.document.documentID)
+        if type == .task, let list = list, let document = list.document {
+            query = query.whereField("listid", isEqualTo: document.documentID)
         }
         return query
     }
