@@ -30,7 +30,7 @@ class CollectionViewController: UIViewController {
     @IBOutlet private weak var collectionTableView: UITableView!
     public var type: Type = .list
     private var listener: ListenerRegistration?
-    private var collection: [ItemProtocol] = []
+    private var collection: [CollectionObject] = []
     public var list: List?
     
     //MARK: - vc lifecycle
@@ -42,6 +42,7 @@ class CollectionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         if Auth.auth().currentUser == nil, let authUI = FUIAuth.defaultAuthUI() {
             let provider = FUIEmailAuth()
             authUI.providers = [provider]
@@ -74,7 +75,7 @@ class CollectionViewController: UIViewController {
     }
     
     private func updateNavTitle(_ list: List? = nil) {
-        if let listTitle = list?.title {
+        if let listTitle = list?.name {
             navigationItem.title = listTitle
         } else {
             navigationItem.title = "Lists"
@@ -119,6 +120,8 @@ class CollectionViewController: UIViewController {
                     guard error != nil else { return }
                     self?.getDocuments()
                 })
+            default:
+                ()
             }
         }
         let cancelAction = UIAlertAction(title: "cancel", style: .default, handler: nil)
@@ -149,7 +152,7 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
         switch type {
         case .list:
             let listCell = tableView.dequeueReusableCell(withIdentifier: "ListTableViewCellID", for: indexPath) as! ListTableViewCell
-            listCell.listTitleLabel.text = list.title
+            listCell.listTitleLabel.text = list.name
             if let task = list as? Task {
                 listCell.accessoryType = task.completed ? .checkmark : .none
             }
@@ -161,6 +164,9 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
                 taskCell.configure(taskViewModel)
             }
             cell = taskCell
+        default:
+            //NOTE: not sure what to do with this for now
+            cell = UITableViewCell()
         }
         return cell
     }
@@ -176,11 +182,12 @@ extension CollectionViewController: UITableViewDelegate, UITableViewDataSource {
             guard let collectionViewController = storyboard?.instantiateViewController(withIdentifier: "CollectionViewController") as? CollectionViewController else { return }
             collectionViewController.type = .task
             collectionViewController.list = item as? List
-            collectionViewController.navigationItem.title = item.title
+            collectionViewController.navigationItem.title = item.name
             navigationController?.pushViewController(collectionViewController, animated: true)
         case .task:
-            ()
             performSegue(withIdentifier: CollectionViewController.taskDetailSegue, sender: item)
+        default:
+            ()
         }
     }
     //TODO: need to add a swipe gesture to allow the pop to happen only on empty cells
@@ -229,7 +236,11 @@ extension UIContextualAction {
 
 extension CollectionViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        guard error == nil else { return }
         print(authUI, authDataResult ?? "no data result", error ?? "no error")
+        if let userId = authDataResult?.user.uid {
+            
+        }
         getDocuments()
     }
 }

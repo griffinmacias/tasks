@@ -45,7 +45,7 @@ class ItemDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         if let task = task {
-            titleTextField.text = task.title
+            titleTextField.text = task.name
             showAlert = task.alert
         }
         itemDetailTableView.tableFooterView = UIView()
@@ -82,7 +82,7 @@ class ItemDetailTableViewController: UITableViewController {
         if let titleText = titleText {
             let santizedText = titleText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if santizedText.count > 0 {
-                task.title = santizedText
+                task.name = santizedText
             }
         }
     }

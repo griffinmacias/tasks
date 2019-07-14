@@ -92,7 +92,7 @@ class TaskLocalNotificationSpec: QuickSpec {
 private class TaskMock: Task {
     convenience init(_ title: String = "", alert: Bool = false, dueDate: Date? = nil, completed: Bool = false) {
         self.init()
-        self.title = title
+        self.name = title
         self.alert = alert
         self.dueDate = dueDate
         self.completed = completed

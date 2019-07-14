@@ -10,63 +10,60 @@ import Foundation
 import Firebase
 import UserNotifications
 
-final class Metadata {
-    var roles: [String:[String]] = [:]
+
+
+public enum FieldType: String {
+    case document = "document"
+    case name = "name"
+    case completed = "completed"
+    case alert = "alert"
+    case dueDate = "dueDate"
+    case userId = "userId"
 }
 
-protocol ItemProtocol {
-    var title: String { get set }
-//    var metadata: Metadata { get set }
-    var document: DocumentSnapshot? { get set }
-    init(_ document: QueryDocumentSnapshot?)
-}
-
-final class List: ItemProtocol {
+public class CollectionObject {
+    enum CodingKeys: CodingKey {
+        case name
+        case document
+    }
+    var name: String
     var document: DocumentSnapshot?
-
-    public var title: String {
-        didSet {
-            //network call?
-        }
-    }
-    
-    public var tasks: [Task] = []
-//    public var metadata: Metadata
-    public init(_ document: QueryDocumentSnapshot?) {
+    var type: Type
+    init(_ document: QueryDocumentSnapshot? = nil, type: Type) {
+        let nameField = FieldType.name.rawValue
+        self.name = document?.data()[nameField] as? String ?? "no \(nameField)"
         self.document = document
-        self.title = document?.data()["title"] as? String ?? "no title"
-//        self.metadata = Metadata()
+        self.type = type
     }
-    
+}
+
+final class User: CollectionObject {
+    var userId: String
+    init(_ document: QueryDocumentSnapshot? = nil) {
+        let userIdField = FieldType.name.rawValue
+        self.userId = document?.data()[userIdField] as? String ?? "no \(userIdField)"
+        super.init(document, type: .user)
+    }
+}
+
+final class List: CollectionObject {
+    public var tasks: [Task] = []
     public func add(_ task: String, completion: @escaping () -> Void) {
         let dict = ["title": task]
         document?.reference.updateData(["tasks":[dict]]) { (_) in
             completion()
         }
     }
-    
-    public func remove( _ task: String) {
-        
-    }
-    
 }
 
-public class Task: ItemProtocol {
+public class Task: CollectionObject {
     
     var updatedFields: [FieldType: Any] = [:]
     
-    public enum FieldType: String {
-        case document = "document"
-        case title = "title"
-        case completed = "completed"
-        case alert = "alert"
-        case dueDate = "dueDate"
-    }
-    
-    public var title: String {
+    override public var name: String {
         willSet {
-            if title != newValue {
-                updatedFields[.title] = newValue
+            if name != newValue {
+                updatedFields[.name] = newValue
             }
         }
     }
@@ -116,22 +113,19 @@ public class Task: ItemProtocol {
             TaskScheduleManager.handle(self, scheduleType: .update(.completed))
         }
     }
-    
-    var document: DocumentSnapshot?
 
-    required init(_ document: QueryDocumentSnapshot? = nil) {
-        self.title = document?.data()[FieldType.title.rawValue] as? String ?? "no title"
-        self.document = document
+    public init(_ document: QueryDocumentSnapshot? = nil) {
         self.completed = document?.data()[FieldType.completed.rawValue] as? Bool ?? false
         self.dueDate = (document?.data()[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue()
         self.alert = document?.data()[FieldType.alert.rawValue] as? Bool ?? false
+        super.init(document, type: .task)
     }
 }
 
 extension Task: Equatable {
     public static func == (lhs: Task, rhs: Task) -> Bool {
         //eventually will need to add assignee check and isDeleted check
-        return lhs.title == rhs.title && lhs.alert == rhs.alert && lhs.dueDate == rhs.dueDate && lhs.completed == rhs.completed
+        return lhs.name == rhs.name && lhs.alert == rhs.alert && lhs.dueDate == rhs.dueDate && lhs.completed == rhs.completed
     }
     
     
@@ -145,7 +139,7 @@ extension String.StringInterpolation {
         }
         appendInterpolation("""
             ///
-            task: title \(task.title)
+            task: title \(task.name)
             alert \(task.alert)
             dueDate \(dateString)
             completed \(task.completed)
@@ -156,9 +150,25 @@ extension String.StringInterpolation {
 }
 
 enum Type: String {
+    
     case list = "list"
     case task = "task"
+    case user = "user"
+    
+    var fieldTypes: Set<FieldType> {
+        switch self {
+        case .list:
+            return [.name, .document]
+        case .task:
+            return [.name, .document, .alert, .dueDate, .completed]
+        case .user:
+            return [.name]
+        }
+    }
 }
+
+
+
 
 
 final class TaskViewModel {
@@ -167,7 +177,7 @@ final class TaskViewModel {
     var dueDatePassed: Bool = false
     var completed: Bool
     init(_ task: Task) {
-        self.titleText = task.title
+        self.titleText = task.name
         self.completed = task.completed
         if let dueDate = task.dueDate, task.alert {
             //check if the date has already past

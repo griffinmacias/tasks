@@ -69,7 +69,7 @@ struct TaskScheduleManager: NotificationScheduling {
         //if the old due date already went off, we need to decrement the badge count
         guard task.alert, !task.completed,
             let newDueDate = task.dueDate,
-            let oldDueDate = (task.document?.data()?[Task.FieldType.dueDate.rawValue] as? Timestamp)?.dateValue() else { return }
+            let oldDueDate = (task.document?.data()?[FieldType.dueDate.rawValue] as? Timestamp)?.dateValue() else { return }
         prepare(newDueDate, oldDueDate)
     }
     
@@ -227,7 +227,7 @@ private extension UNMutableNotificationContent {
     convenience init(_ task: Task) {
         self.init()
         title = NotificationTitle.task.rawValue
-        body = task.title
+        body = task.name
         sound = .default
         //TODO: need to change this
         //to increment the badge count

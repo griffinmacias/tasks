@@ -9,11 +9,45 @@
 import Foundation
 import FirebaseFirestore
 
+struct CollectionSerializer {
+    static func transform(_ collection: CollectionObject) -> [String: Any] {
+        var params: [String: Any] = [FieldType.name.rawValue: collection.name ]
+        switch collection.type {
+        case .task:
+            transform(collection as! Task, &params)
+        case .list:
+            transform(collection as! List, &params)
+        case .user:
+            transform(collection as! User, &params)
+        }
+        return params
+    }
+    
+    private static func transform(_ task: Task, _ params:inout [String: Any]) {
+        let taskParams = [
+            FieldType.alert.rawValue: task.alert,
+            FieldType.completed.rawValue: task.completed
+        ]
+        params.merge(taskParams) { $1 }
+        if let dueDate = task.dueDate {
+            params[FieldType.dueDate.rawValue] = dueDate
+        }
+    }
+    
+    private static func transform(_ list: List, _ params:inout [String: Any]) {
+    
+    }
+    
+    private static func transform(_ user: User, _ params:inout [String: Any]) {
+        
+    }
+}
+
 
 final class Network {
     
     typealias Completion = () -> Void
-    typealias ItemsCompletion = ([ItemProtocol]) -> Void
+    typealias ItemsCompletion = ([CollectionObject]) -> Void
     typealias CountCompletion = (Int) -> Void
     
     static let shared = Network()
@@ -28,11 +62,11 @@ final class Network {
                 print("Error fetching snapshot results: \(error!)")
                 return
             }
-            let collection = snapshot.documents.map { (document) -> ItemProtocol in
+            let collection = snapshot.documents.map { (document) -> CollectionObject in
                 print(document)
                 switch type {
                 case .list:
-                    return List(document)
+                    return List(document, type: .list)
                 default:
                     return Task(document)
                 }
@@ -53,16 +87,22 @@ final class Network {
         })
     }
     
-    public func update(_ document: DocumentSnapshot?, with fields: [Task.FieldType: Any], completion: Completion? = nil) {
-        
-        var params: [String: Any] = [:]
-        fields.forEach { (key, value) in
-            params[key.rawValue] = value
-        }
-
+    func create(_ collectionObject: CollectionObject, completion: Completion? = nil) {
+        let collection = Firestore.firestore().collection(collectionObject.type.rawValue + "s")
+        collection.addDocument(data: CollectionSerializer.transform(collectionObject), completion: { (error) in
+            guard error != nil else { return }
+            if let completion = completion {
+                completion()
+            }
+        })
+    }
+    
+    public func update<K: RawRepresentable>(_ document: DocumentSnapshot?, with fields: [K: Any], completion: Completion? = nil) where K.RawValue == String {
+        let params = Dictionary(uniqueKeysWithValues: fields.map { key, value in (key.rawValue, value) })
+    
         document?.reference.updateData(params) { (error) in
             if let error = error {
-                print("error updating obj \(String(describing: document?.data()?[Task.FieldType.title.rawValue])) \(error.localizedDescription)")
+                print("error updating obj \(String(describing: document?.data()?[FieldType.name.rawValue])) \(error.localizedDescription)")
                 if let completion = completion {
                     completion()
                 }
@@ -86,9 +126,9 @@ extension Query {
     //NOTE: - only works for tasks for now
     class func passedDueDates(for type: Type) -> Query {
         let query = CollectionReference.query(with: .task)
-            .whereField("dueDate", isLessThan: Timestamp())
-            .whereField("alert", isEqualTo: true)
-            .whereField("completed", isEqualTo: false)
+            .whereField(FieldType.dueDate.rawValue, isLessThan: Timestamp())
+            .whereField(FieldType.alert.rawValue, isEqualTo: true)
+            .whereField(FieldType.completed.rawValue, isEqualTo: false)
         return query
     }
 }
