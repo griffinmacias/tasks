@@ -104,7 +104,9 @@ struct TaskScheduleManager: NotificationScheduling {
         if task.completed {
             //check if the due date was passed, decrement badge count if so
             if let dueDate = task.dueDate, dueDate.timeIntervalSinceNow < 0 {
+                print("before", NotificationBadgeHandler.badgeCount)
                 NotificationBadgeHandler.badgeCount -= 1
+                print("after", NotificationBadgeHandler.badgeCount)
             }
             TaskNotifications.unschedulePendingNotificationRequest(for: task)
         } else {

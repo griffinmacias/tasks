@@ -10,17 +10,18 @@ target 'tasks' do
 	pod 'Firebase/Core'
 	pod 'FirebaseUI'
 	pod 'Firebase/Firestore'
-	pod 'Quick'
-	pod 'Nimble'
 
   target 'tasksTests' do
     inherit! :search_paths
     # Pods for testing
+	pod 'Quick'
+	pod 'Nimble'
   end
 
   target 'tasksUITests' do
     inherit! :search_paths
     # Pods for testing
   end
+
 
 end
