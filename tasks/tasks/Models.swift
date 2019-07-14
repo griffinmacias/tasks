@@ -89,7 +89,7 @@ public class Task: ItemProtocol {
     
     public var dueDate: Date? {
         willSet {
-            if dueDate?.timeIntervalSinceNow != newValue?.timeIntervalSinceNow {
+            if dueDate != newValue {
                 updatedFields[.dueDate] = newValue
             }
         }

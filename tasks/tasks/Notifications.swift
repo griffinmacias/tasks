@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import UserNotifications
+import Firebase
 
 private protocol NotificationBadging {
     static var badgeCount: Int { get set }
@@ -68,12 +69,12 @@ struct TaskScheduleManager: NotificationScheduling {
         //if the old due date already went off, we need to decrement the badge count
         guard task.alert, !task.completed,
             let newDueDate = task.dueDate,
-            let oldDueDate = task.document?.data()?[Task.FieldType.dueDate.rawValue] as? Date else { return }
+            let oldDueDate = (task.document?.data()?[Task.FieldType.dueDate.rawValue] as? Timestamp)?.dateValue() else { return }
         prepare(newDueDate, oldDueDate)
     }
     
     static func prepare(_ oldDueDate: Date, _ newDueDate: Date) {
-       guard  oldDueDate.timeIntervalSinceNow < 0, newDueDate.timeIntervalSinceNow > 0 else { return }
+       guard  oldDueDate < Date(), newDueDate > Date() else { return }
         NotificationBadgeHandler.badgeCount -= 1
     }
     
@@ -93,7 +94,7 @@ struct TaskScheduleManager: NotificationScheduling {
         case true:
             handleDueDate(for: task)
         case false:
-            if let dueDate = task.dueDate, dueDate.timeIntervalSinceNow < 0 {
+            if let dueDate = task.dueDate, dueDate < Date() {
                 NotificationBadgeHandler.badgeCount-=1
             }
             TaskNotifications.unschedulePendingNotificationRequest(for: task)
@@ -103,7 +104,7 @@ struct TaskScheduleManager: NotificationScheduling {
     private static func handleCompleted(for task: Task) {
         if task.completed {
             //check if the due date was passed, decrement badge count if so
-            if let dueDate = task.dueDate, dueDate.timeIntervalSinceNow < 0 {
+            if let dueDate = task.dueDate, dueDate < Date() {
                 print("before", NotificationBadgeHandler.badgeCount)
                 NotificationBadgeHandler.badgeCount -= 1
                 print("after", NotificationBadgeHandler.badgeCount)
@@ -120,7 +121,7 @@ struct TaskScheduleManager: NotificationScheduling {
         //just in case
         TaskNotifications.unschedulePendingNotificationRequest(for: task)
         //if the due date is in the future, schedule it
-        if dueDate.timeIntervalSinceNow > 0 {
+        if dueDate > Date() {
             TaskNotifications.schedulePendingNotificationRequest(for: task)
         } else {
             //if the due date was passed we need to increment the badge

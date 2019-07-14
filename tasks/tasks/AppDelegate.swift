@@ -24,9 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         center.setNotificationCategories([taskCategory])
         center.requestAuthorization(options: [.badge, .sound, .alert]) { (granted, error) in
             print("Granted \(granted), Error \(error.debugDescription)")
-            DispatchQueue.main.async {
-                NotificationBadgeHandler.badgeCount = 0
-            }
+            Network.shared.numberOfDueDatesPassed(completion: { (badgeCount) in
+                DispatchQueue.main.async {
+                    NotificationBadgeHandler.badgeCount = badgeCount
+                }
+            })
         }
         return true
     }
