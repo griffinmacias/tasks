@@ -22,10 +22,6 @@ public enum FieldType: String {
 }
 
 public class CollectionObject {
-    enum CodingKeys: CodingKey {
-        case name
-        case document
-    }
     var name: String
     var document: DocumentSnapshot?
     var type: Type
@@ -38,11 +34,11 @@ public class CollectionObject {
 }
 
 final class User: CollectionObject {
-    var userId: String
-    init(_ document: QueryDocumentSnapshot? = nil) {
-        let userIdField = FieldType.name.rawValue
-        self.userId = document?.data()[userIdField] as? String ?? "no \(userIdField)"
+    var id: String
+    init(_ userId: String, _ userName: String, _ document: QueryDocumentSnapshot? = nil) {
+        id = userId
         super.init(document, type: .user)
+        name = userName
     }
 }
 
@@ -98,7 +94,7 @@ public class Task: CollectionObject {
         //schedule
         scheduleIfNeeded()
         //update
-        Network.shared.update(document, with: updatedFields)
+        Network.shared.update(self)
         //clear newly updated fields
         updatedFields = [:]
     }
@@ -150,21 +146,9 @@ extension String.StringInterpolation {
 }
 
 enum Type: String {
-    
     case list = "list"
     case task = "task"
     case user = "user"
-    
-    var fieldTypes: Set<FieldType> {
-        switch self {
-        case .list:
-            return [.name, .document]
-        case .task:
-            return [.name, .document, .alert, .dueDate, .completed]
-        case .user:
-            return [.name]
-        }
-    }
 }
 
 
@@ -181,7 +165,7 @@ final class TaskViewModel {
         self.completed = task.completed
         if let dueDate = task.dueDate, task.alert {
             //check if the date has already past
-            dueDatePassed = dueDate.timeIntervalSinceNow < 0
+            dueDatePassed = dueDate < Date()
             //format dateText
             dueDateText = dueDate.string(.dateShortTimeShort)
         }

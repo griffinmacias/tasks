@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 struct CollectionSerializer {
     static func transform(_ collection: CollectionObject) -> [String: Any] {
-        var params: [String: Any] = [FieldType.name.rawValue: collection.name ]
+        var params: [String: Any] = [FieldType.name.rawValue: collection.name]
         switch collection.type {
         case .task:
             transform(collection as! Task, &params)
@@ -35,11 +35,11 @@ struct CollectionSerializer {
     }
     
     private static func transform(_ list: List, _ params:inout [String: Any]) {
-    
+        //TODO:might not really need this, we will see--- waiting for firebase update to use codable
     }
     
     private static func transform(_ user: User, _ params:inout [String: Any]) {
-        
+        params[FieldType.userId.rawValue] = user.id
     }
 }
 
@@ -97,12 +97,10 @@ final class Network {
         })
     }
     
-    public func update<K: RawRepresentable>(_ document: DocumentSnapshot?, with fields: [K: Any], completion: Completion? = nil) where K.RawValue == String {
-        let params = Dictionary(uniqueKeysWithValues: fields.map { key, value in (key.rawValue, value) })
-    
-        document?.reference.updateData(params) { (error) in
+    public func update(_ collectionObject: CollectionObject, completion: Completion? = nil) {
+        collectionObject.document?.reference.updateData(CollectionSerializer.transform(collectionObject)) { (error) in
             if let error = error {
-                print("error updating obj \(String(describing: document?.data()?[FieldType.name.rawValue])) \(error.localizedDescription)")
+                print("error updating obj \(String(describing: collectionObject.document?.data()?[FieldType.name.rawValue])) \(error.localizedDescription)")
                 if let completion = completion {
                     completion()
                 }

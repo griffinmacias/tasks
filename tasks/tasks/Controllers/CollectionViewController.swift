@@ -239,7 +239,9 @@ extension CollectionViewController: FUIAuthDelegate {
         guard error == nil else { return }
         print(authUI, authDataResult ?? "no data result", error ?? "no error")
         if let userId = authDataResult?.user.uid {
-            
+            let userName = ""
+            let user = User(userName, userId)
+            Network.shared.create(user)
         }
         getDocuments()
     }
